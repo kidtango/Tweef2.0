@@ -7,6 +7,7 @@ import React, {
   ComponentType
 } from 'react';
 import { Switch, Redirect, Route, RouteComponentProps } from 'react-router-dom';
+import DashboardLayout from 'layouts/DashboardLayout';
 
 interface RouteProps {
   exact?: boolean;
@@ -23,6 +24,7 @@ const routesConfig: RouteProps[] = [
   {
     exact: true,
     path: '/',
+    layout: DashboardLayout,
     component: () => <Redirect to="/home" />
   }
 ];
