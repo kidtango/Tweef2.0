@@ -127,7 +127,7 @@ const themeConfigs = [
 ];
 
 export function createTheme(settings: ThemeSettings) {
-  let themeConfig = themeConfigs.find(
+  let themeConfig: any = themeConfigs.find(
     (theme) => theme.name === settings.theme
   );
 

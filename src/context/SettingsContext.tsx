@@ -43,7 +43,7 @@ const SettingsContextProvider: React.FC<Props> = ({ settings, children }) => {
   };
 
   useEffect(() => {
-    document.dir = currentSettings.direction;
+    document.dir = currentSettings.direction!;
   }, [currentSettings]);
 
   return (

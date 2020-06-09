@@ -1,7 +1,7 @@
 export interface ThemeSettings {
-  direction: 'ltr' | 'rtl' | undefined;
+  direction?: 'ltr' | 'rtl';
   responsiveFontSizes: boolean;
-  theme: string;
+  theme?: 'LIGHT' | 'ONE_DARK' | 'UNICORN';
 }
 
 export function restoreSettings() {

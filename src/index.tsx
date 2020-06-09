@@ -2,11 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import SettingsContextProvider from 'context/SettingsContext';
+import { restoreSettings } from 'utils/settings';
+
+const settings = restoreSettings();
 
 ReactDOM.render(
-  <React.StrictMode>
+  <SettingsContextProvider settings={settings!}>
     <App />
-  </React.StrictMode>,
+  </SettingsContextProvider>,
   document.getElementById('root')
 );
 
