@@ -3,8 +3,8 @@ import React, {
   Suspense,
   Fragment,
   ReactNode,
-  ReactFragment,
-  ComponentType
+  ComponentType,
+  LazyExoticComponent
 } from 'react';
 import { Switch, Redirect, Route, RouteComponentProps } from 'react-router-dom';
 import DashboardLayout from 'layouts/DashboardLayout';
@@ -15,17 +15,33 @@ interface RouteProps {
   path?: string;
   component?:
     | ComponentType<RouteComponentProps<any>>
-    | React.ComponentType<any>;
+    | LazyExoticComponent<ComponentType<any>>;
   layout?: ReactNode;
-  routes?: { exact: boolean; path: string; component: () => any }[];
+  routes?: {
+    exact?: boolean;
+    path?: string;
+    component?:
+      | ComponentType<RouteComponentProps<any>>
+      | LazyExoticComponent<ComponentType<any>>;
+  }[];
 }
 
 const routesConfig: RouteProps[] = [
   {
-    exact: true,
-    path: '/',
+    path: '/app',
     layout: DashboardLayout,
-    component: () => <Redirect to="/home" />
+    routes: [
+      {
+        exact: true,
+        path: '/app',
+        component: () => <Redirect to="/app/market" />
+      },
+      {
+        exact: true,
+        path: '/app/market',
+        component: lazy(() => import('views/market/MarketBrowseView'))
+      }
+    ]
   }
 ];
 

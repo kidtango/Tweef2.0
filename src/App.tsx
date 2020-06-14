@@ -12,6 +12,7 @@ import {
 import { useSettingsContext } from 'context/SettingsContext';
 import { createTheme } from 'theme';
 import { Router } from 'react-router-dom';
+import Routes from 'Routes';
 
 const history = createBrowserHistory();
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
@@ -53,7 +54,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={createTheme(settings!)}>
       <StylesProvider jss={jss}>
         <Router history={history}>
-          <div>Tweef</div>
+          <Routes />
         </Router>
       </StylesProvider>
     </ThemeProvider>
