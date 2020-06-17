@@ -12,6 +12,7 @@ import {
 import { useSettingsContext } from 'context/SettingsContext';
 import { createTheme } from 'theme';
 import { Router } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
 import Routes from 'Routes';
 
 const history = createBrowserHistory();
@@ -52,11 +53,13 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={createTheme(settings!)}>
-      <StylesProvider jss={jss}>
-        <Router history={history}>
-          <Routes />
-        </Router>
-      </StylesProvider>
+      <SnackbarProvider maxSnack={1}>
+        <StylesProvider jss={jss}>
+          <Router history={history}>
+            <Routes />
+          </Router>
+        </StylesProvider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 };

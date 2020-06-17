@@ -1,6 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 import { makeStyles, Theme } from '@material-ui/core';
 import NavBar from './NavBar';
+import TopBar from './TopBar';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -12,7 +13,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   return (
     <div className={classes.root}>
-      <NavBar openMobile={true} onMobileClose={() => true} />
+      <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} />
+      <NavBar
+        openMobile={isMobileNavOpen}
+        onMobileClose={() => setMobileNavOpen(false)}
+      />
       <div className={classes.wrapper}>
         <div className={classes.contentContainer}>
           <div className={classes.content}>{children}</div>

@@ -14,7 +14,7 @@ import {
 import {
   PieChart as PieChartIcon,
   ShoppingCart as ShoppingCartIcon,
-  Share as ShareIcon,
+  Share2 as ShareIcon,
   Mail as MailIcon
 } from 'react-feather';
 import { useLocation, Link as RouterLink } from 'react-router-dom';
@@ -22,6 +22,7 @@ import { makeStyles } from '@material-ui/styles';
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import RenderNavItems from './components/RenderNavItems';
+import Logo from 'assets/icons/Logo';
 
 const navConfig = [
   {
@@ -79,27 +80,27 @@ const navConfig = [
   }
 ];
 
+// mock data
+const user = {
+  firstName: 'Scott',
+  lastName: 'Tang',
+  bio: 'Software Engineer',
+  avatar:
+    'https://insidethemagic-119e2.kxcdn.com/wp-content/uploads/2017/11/4Avatar-2-5.jpg'
+};
+
 interface NavBarProps {
-  openMobile: any;
-  onMobileClose: any;
+  openMobile: boolean;
+  onMobileClose: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const NavBar: React.FC<NavBarProps> = ({ openMobile, onMobileClose }) => {
   const classes = useStyles();
   const location = useLocation();
 
-  // mock data
-  const user = {
-    firstName: 'Scott',
-    lastName: 'Tang',
-    bio: 'Software Engineer',
-    avatar:
-      'https://insidethemagic-119e2.kxcdn.com/wp-content/uploads/2017/11/4Avatar-2-5.jpg'
-  };
-
   useEffect(() => {
     if (openMobile && onMobileClose) {
-      onMobileClose();
+      onMobileClose(false);
     }
     // eslint-disable-next-line
   }, [location.pathname]);
@@ -109,7 +110,9 @@ const NavBar: React.FC<NavBarProps> = ({ openMobile, onMobileClose }) => {
       <PerfectScrollbar options={{ suppressScrollX: true }}>
         <Hidden lgUp>
           <Box p={2} display="flex" justifyContent="center">
-            <RouterLink to="/">Logo</RouterLink>
+            <RouterLink to="/">
+              <Logo fontSize="large" />
+            </RouterLink>
           </Box>
         </Hidden>
         <Box p={2}>
@@ -159,8 +162,9 @@ const NavBar: React.FC<NavBarProps> = ({ openMobile, onMobileClose }) => {
         <Drawer
           anchor="left"
           classes={{ paper: classes.mobileDrawer }}
-          open
-          variant="persistent"
+          onClose={onMobileClose}
+          open={openMobile}
+          variant="temporary"
         >
           {content}
         </Drawer>

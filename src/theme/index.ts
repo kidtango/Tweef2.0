@@ -1,6 +1,12 @@
 import typography from './typography';
 import _ from 'lodash';
-import { colors, createMuiTheme, responsiveFontSizes } from '@material-ui/core';
+import {
+  colors,
+  createMuiTheme,
+  responsiveFontSizes,
+  Theme,
+  ThemeOptions
+} from '@material-ui/core';
 import { softShadows, strongShadows } from './shadows';
 import { THEMES } from 'constants/themeConstants';
 import { ThemeSettings } from 'utils/settings';
@@ -126,6 +132,15 @@ const themeConfigs = [
   }
 ];
 
+// Extending the default Theme definitions
+export interface ITheme extends Theme {
+  name?: 'LIGHT' | 'ONE_DARK' | 'UNICORN';
+}
+
+interface IThemeOptions extends ThemeOptions {
+  name?: 'LIGHT' | 'ONE_DARK' | 'UNICORN';
+}
+
 export function createTheme(settings: ThemeSettings) {
   let themeConfig: any = themeConfigs.find(
     (theme) => theme.name === settings.theme
@@ -136,8 +151,10 @@ export function createTheme(settings: ThemeSettings) {
     [themeConfig] = themeConfigs;
   }
 
-  let theme = createMuiTheme(
-    _.merge({}, baseConfig, themeConfig, { direction: settings.direction })
+  let theme: ITheme = createMuiTheme(
+    _.merge({}, baseConfig, themeConfig, {
+      direction: settings.direction
+    }) as IThemeOptions
   );
 
   if (settings.responsiveFontSizes) {
