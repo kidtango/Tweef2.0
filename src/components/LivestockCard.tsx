@@ -22,7 +22,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Users as UsersIcon } from 'react-feather';
 import moment from 'moment';
 
-import { Livestock } from 'models';
+import { Livestock } from 'models/Livestock';
 import getInitials from 'utils/getInitials';
 
 interface LivestockCardProps {
@@ -70,19 +70,26 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
               {livestock.name}
             </Link>
             <Typography variant="body2" color="textSecondary">
-              by{' '}
+              Seller:{' '}
               <Link
                 color="textPrimary"
                 component={RouterLink}
                 to="#"
                 variant="h6"
               >
-                {livestock.seller.firstName + ' ' + livestock.seller.lastName}
+                {livestock.seller.firstName +
+                  ' ' +
+                  livestock.seller.lastName[0]}
               </Link>{' '}
               | Updated {moment(livestock.updatedAt).fromNow()}
             </Typography>
           </Box>
         </Box>
+      </Box>
+      <Box pb={2} px={3}>
+        <Typography color="textSecondary" variant="h3">
+          $50
+        </Typography>
       </Box>
       <Box pb={2} px={3}>
         <Typography color="textSecondary" variant="body2">
@@ -93,7 +100,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
         <Grid alignItems="center" container justify="space-between" spacing={3}>
           <Grid item>
             <Typography variant="h5" color="textPrimary">
-              {livestock.location}
+              {livestock.seller.location}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               Location

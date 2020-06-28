@@ -15,6 +15,8 @@ import { Router } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 import Routes from 'Routes';
 
+import { ReactQueryDevtools } from 'react-query-devtools';
+
 const history = createBrowserHistory();
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
@@ -60,6 +62,7 @@ const App: React.FC = () => {
           </Router>
         </StylesProvider>
       </SnackbarProvider>
+      <ReactQueryDevtools />
     </ThemeProvider>
   );
 };

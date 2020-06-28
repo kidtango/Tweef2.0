@@ -17,7 +17,7 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import { Contact } from 'models';
+import { Contact } from 'models/Contact';
 import objFromArray from 'utils/objFromArray';
 import OnlineIndicator from 'components/OnlineIndicator';
 

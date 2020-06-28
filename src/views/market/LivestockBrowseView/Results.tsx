@@ -14,7 +14,7 @@ import {
 import { ToggleButtonGroup, ToggleButton, Pagination } from '@material-ui/lab';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { Livestock } from 'models';
+import { Livestock } from 'models/Livestock';
 import LivestockCard from 'components/LivestockCard';
 
 interface ResultsProps {

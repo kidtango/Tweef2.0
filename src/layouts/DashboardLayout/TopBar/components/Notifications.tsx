@@ -22,7 +22,7 @@ import {
   MessageCircle as MessageIcon,
   Truck as TruckIcon
 } from 'react-feather';
-import { Notification } from 'models';
+import { Notification } from 'models/Notification';
 
 const iconsMap: { [key: string]: React.FC<any> } = {
   order_placed: PackageIcon,

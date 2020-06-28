@@ -39,7 +39,12 @@ const routesConfig: RouteProps[] = [
       {
         exact: true,
         path: '/app/market',
-        component: lazy(() => import('views/market/MarketBrowseView'))
+        component: lazy(() => import('views/market/LivestockBrowseView'))
+      },
+      {
+        exact: true,
+        path: '/app/livestock/create',
+        component: lazy(() => import('views/market/LivestockCreateView'))
       }
     ]
   }
