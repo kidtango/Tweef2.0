@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import 'react-quill/dist/quill.snow.css';
 import SettingsContextProvider from 'context/SettingsContext';
 import { restoreSettings } from 'utils/settings';
 
