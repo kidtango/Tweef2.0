@@ -18,8 +18,6 @@ const LivestockBrowseView: React.FC = () => {
 
   const { status, data, error, isFetching } = useLivestocks();
 
-  if (isFetching) return <div>loading...</div>;
-
   if (error)
     return <div>opps... Something went wrong, please refresh browser</div>;
 
@@ -30,9 +28,13 @@ const LivestockBrowseView: React.FC = () => {
         <Box mt={3}>
           <Filter />
         </Box>
-        <Box mt={6}>
-          <Results livestock={data.livestock} />
-        </Box>
+        {isFetching ? (
+          <Box mt={6}>loading...</Box>
+        ) : (
+          <Box mt={6}>
+            <Results livestock={data.livestock} />
+          </Box>
+        )}
       </Container>
     </Page>
   );

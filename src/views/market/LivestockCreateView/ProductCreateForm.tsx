@@ -15,12 +15,13 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import { Formik, setNestedObjectValues } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import QuillEditor from 'components/QuillEditor';
+import FilesDropZone from 'components/FilesDropZone';
 
 const waterTypes = [
   { id: 'salt', name: 'Saltwater' },
@@ -32,7 +33,8 @@ const classifications = [
   { id: 'coral', name: 'coral' },
   { id: 'fish', name: 'FISH' },
   { id: 'lps', name: 'LPS' },
-  { id: 'soft_coral', name: 'Soft Corals' }
+  { id: 'soft_coral', name: 'Soft Corals' },
+  { id: 'plant', name: 'Plant' }
 ];
 
 interface ProductCreateFormProps {
@@ -45,7 +47,6 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
   ...rest
 }) => {
   const classes = useStyles();
-  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
 
   return (
@@ -64,15 +65,15 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
       }}
       validationSchema={Yup.object().shape({
         category: Yup.string().max(255),
-        description: Yup.string().max(5000)
-        // images: Yup.array(),
-        // includesTaxes: Yup.bool().required(),
-        // isTaxable: Yup.bool().required(),
-        // name: Yup.string().max(255).required(),
-        // price: Yup.number().min(0).required(),
-        // productCode: Yup.string().max(255),
-        // productSku: Yup.string().max(255),
-        // salePrice: Yup.number().min(0)
+        description: Yup.string().max(5000),
+        images: Yup.array(),
+        includesTaxes: Yup.bool().required(),
+        isTaxable: Yup.bool().required(),
+        name: Yup.string().max(255).required(),
+        price: Yup.number().min(0).required(),
+        productCode: Yup.string().max(255),
+        productSku: Yup.string().max(255),
+        salePrice: Yup.number().min(0)
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
@@ -132,8 +133,24 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
                       }
                     />
                   </Paper>
+                  {touched.description && errors.description && (
+                    <Box mt={2}>
+                      <FormHelperText error>
+                        {errors.description}
+                      </FormHelperText>
+                    </Box>
+                  )}
                 </CardContent>
               </Card>
+              <Box mt={3}>
+                <Card>
+                  <CardHeader title="Upload Images" />
+                  <Divider />
+                  <CardContent>
+                    <FilesDropZone />
+                  </CardContent>
+                </Card>
+              </Box>
             </Grid>
           </Grid>
           <Box mt={2}>

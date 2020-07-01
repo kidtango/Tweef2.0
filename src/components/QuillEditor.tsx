@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core';
 
 interface QuillEditorProps {
   className: any;
-  [x: string]: ReactNode;
+  [x: string]: any;
 }
 
 const QuillEditor: React.FC<QuillEditorProps> = ({ className, ...rest }) => {
