@@ -2,33 +2,35 @@ import { useQuery } from 'react-query';
 import { client } from 'graphqlClient';
 
 export const getAllLiveStockQuery = `{
-  livestock {
-    id
-    likes
-    isLiked
-    createdAt
-    updatedAt
-    description
-    subcribers {
+  allLivestock {
       id
-    }
-    seller {
-      id
-      firstName
-      lastName
-      avatar
+      likes
       location
+      price
+      isLiked {
+        id
+      }
       createdAt
-      rating
+      updatedAt
+      description
+      subcribers {
+        id
+      }
+      seller {
+        id
+        firstName
+        lastName
+        avatar
+        address
+        createdAt
+        rating
+      }
+      name
+      water
+      class
+      coralType
+      media
     }
-    name
-    water
-    class {
-      species
-      type
-    }
-    media
-  }
 }`;
 
 const getLivestocks = async () => {
@@ -38,5 +40,5 @@ const getLivestocks = async () => {
 };
 
 export default function useLivestocks() {
-  return useQuery('livestocks', getLivestocks);
+  return useQuery('allLivestock', getLivestocks);
 }

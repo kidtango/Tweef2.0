@@ -88,7 +88,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
       </Box>
       <Box pb={2} px={3}>
         <Typography color="textSecondary" variant="h3">
-          $50
+          ${livestock.price}
         </Typography>
       </Box>
       <Box pb={2} px={3}>
@@ -100,7 +100,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
         <Grid alignItems="center" container justify="space-between" spacing={3}>
           <Grid item>
             <Typography variant="h5" color="textPrimary">
-              {livestock.seller.location}
+              {livestock.location}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               Location
@@ -108,7 +108,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
           </Grid>
           <Grid item>
             <Typography variant="h5" color="textPrimary">
-              {livestock.class.species}
+              {livestock.coralType}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               Livestock Type

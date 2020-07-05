@@ -1,6 +1,5 @@
-import React, { useState, useRef, ReactNode } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import React, { useState, useRef } from 'react';
+
 import {
   Box,
   Button,

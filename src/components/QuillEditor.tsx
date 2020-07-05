@@ -1,17 +1,30 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import ReactQuill from 'react-quill';
 import { makeStyles } from '@material-ui/core';
 
 interface QuillEditorProps {
   className: any;
+  value: string;
+  onChange?: (content: string) => void;
   [x: string]: any;
 }
 
-const QuillEditor: React.FC<QuillEditorProps> = ({ className, ...rest }) => {
+const QuillEditor: React.FC<QuillEditorProps> = ({
+  className,
+  onChange,
+  value,
+  ...rest
+}) => {
   const classes = useStyles();
 
-  return <ReactQuill className={clsx(classes.root, className)} />;
+  return (
+    <ReactQuill
+      className={clsx(classes.root, className)}
+      onChange={onChange}
+      value={value}
+    />
+  );
 };
 
 export default QuillEditor;

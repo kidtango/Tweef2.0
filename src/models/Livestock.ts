@@ -3,11 +3,10 @@ import { Member } from './Member';
 export interface Livestock {
   id: string;
   name: string;
-  water: 'SALTY' | 'FRESH';
-  class: {
-    type: 'INVERTEGRATES' | 'FISH';
-    species: string;
-  };
+  price: Number;
+  water: 'Saltwater' | 'Freshwater';
+  class: 'Invertegrate' | 'Fish' | 'Coral' | 'Plant';
+  coralType: 'SPS' | 'LPS' | 'Soft Coral' | 'NA';
   description: string;
   subcribers?: string[];
   location: string;

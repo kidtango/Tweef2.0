@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import clsx from 'clsx';
 import { useDropzone } from 'react-dropzone';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -18,21 +18,41 @@ import {
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import bytesToSize from './bytesToSize';
+import { useSnackbar } from 'notistack';
+import { Trash as TrashIcon } from 'react-feather';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import ClearAllIcon from '@material-ui/icons/ClearAll';
 
 // interface DropZoneFile extends File {}
 
 interface FilesDropZoneProps {
   className?: any;
+  setFieldValue: (
+    field: string,
+    value: any,
+    shouldValidate?: boolean | undefined
+  ) => void;
   [x: string]: any;
 }
 
 const FilesDropZone: React.FC<FilesDropZoneProps> = ({
   className,
+  setFieldValue,
+  images,
   ...rest
 }) => {
   const classes = useStyles();
   const [files, setFiles] = useState<File[]>([]);
-  console.log('files', files);
+  const { enqueueSnackbar } = useSnackbar();
+  const [isNewFile, setIsNewFile] = useState<boolean>();
+
+  useEffect(() => {
+    if (files.length > images.length) {
+      setIsNewFile(true);
+    } else {
+      setIsNewFile(false);
+    }
+  }, [files, images]);
 
   const handleDrop = useCallback((acceptedFiles) => {
     setFiles((prevFiles) => [...prevFiles].concat(acceptedFiles));
@@ -40,6 +60,22 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
 
   const handleRemoveAll = () => {
     setFiles([]);
+    setFieldValue('images', []);
+  };
+
+  const handleRemove = (targetIndex: number) => {
+    const newFiles = files.filter(
+      (file, currentIndex) => currentIndex !== targetIndex
+    );
+
+    setFiles(newFiles);
+
+    setFieldValue('images', newFiles);
+  };
+
+  const handleUpload = () => {
+    setFieldValue('images', files);
+    enqueueSnackbar('Images uploaded', { variant: 'success' });
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -88,9 +124,9 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
                     primaryTypographyProps={{ variant: 'h5' }}
                     secondary={bytesToSize(file.size)}
                   />
-                  <Tooltip title="More options">
-                    <IconButton edge="end">
-                      <MoreIcon />
+                  <Tooltip title="Remove this image">
+                    <IconButton edge="end" onClick={() => handleRemove(i)}>
+                      <TrashIcon />
                     </IconButton>
                   </Tooltip>
                 </ListItem>
@@ -98,12 +134,22 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
             </List>
           </PerfectScrollbar>
           <div className={classes.actions}>
-            <Button onClick={handleRemoveAll} size="small">
-              Remove all
-            </Button>
-            <Button color="secondary" size="small" variant="contained">
-              Upload files
-            </Button>
+            <Tooltip title="Clear all">
+              <Button onClick={handleRemoveAll} size="small">
+                <ClearAllIcon /> Clear All
+              </Button>
+            </Tooltip>
+            <Tooltip title="Upload new files">
+              <Button
+                color="secondary"
+                size="small"
+                variant="contained"
+                onClick={handleUpload}
+                disabled={!isNewFile}
+              >
+                <CloudUploadIcon />
+              </Button>
+            </Tooltip>
           </div>
         </>
       )}
