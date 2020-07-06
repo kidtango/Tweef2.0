@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { client } from 'graphqlClient';
 
-export const getAllLiveStockQuery = `{
+export const getAllLiveStock = `{
   livestock {
       id
       likes
@@ -27,7 +27,7 @@ export const getAllLiveStockQuery = `{
 }`;
 
 const getLivestocks = async () => {
-  const data = await client.request(getAllLiveStockQuery);
+  const data = await client.request(getAllLiveStock);
 
   return data;
 };
