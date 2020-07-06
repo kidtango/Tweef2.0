@@ -8,12 +8,11 @@ export interface Livestock {
   class: 'Invertegrate' | 'Fish' | 'Coral' | 'Plant';
   coralType: 'SPS' | 'LPS' | 'Soft Coral' | 'NA';
   description: string;
-  subcribers?: string[];
   location: string;
-  seller: Member;
+  member: Member;
   likes: number | null;
   isLiked: Boolean | null;
-  media: string;
+  images: string[];
   createdAt: Date;
   updatedAt: Date;
 }

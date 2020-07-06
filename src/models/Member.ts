@@ -4,7 +4,7 @@ export interface Member {
   firstName: string;
   lastName: string;
   avatar?: string;
-  location: string;
+  location: number;
   createdAt: Date;
   rating?: number;
 }

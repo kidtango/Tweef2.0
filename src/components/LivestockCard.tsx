@@ -53,11 +53,11 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <Box p={3}>
-        <CardMedia className={classes.media} image={livestock.media} />
+        <CardMedia className={classes.media} image={livestock.images[0]} />
         <Box display="flex" alignItems="center" mt={2}>
-          <Avatar alt="seller" src={livestock.seller.avatar}>
+          <Avatar alt="seller" src={livestock.member.avatar}>
             {getInitials(
-              livestock.seller.firstName + ' ' + livestock.seller.lastName
+              livestock.member.firstName + ' ' + livestock.member.lastName
             )}
           </Avatar>
           <Box ml={2}>
@@ -77,9 +77,9 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
                 to="#"
                 variant="h6"
               >
-                {livestock.seller.firstName +
+                {livestock.member.firstName +
                   ' ' +
-                  livestock.seller.lastName[0]}
+                  livestock.member.lastName[0]}
               </Link>{' '}
               | Updated {moment(livestock.updatedAt).fromNow()}
             </Typography>
@@ -88,7 +88,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
       </Box>
       <Box pb={2} px={3}>
         <Typography color="textSecondary" variant="h3">
-          ${livestock.price}
+          {livestock.price}
         </Typography>
       </Box>
       <Box pb={2} px={3}>
@@ -141,11 +141,11 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
         >
           <UsersIcon />
         </SvgIcon>
-        <Typography variant="subtitle2" color="textSecondary">
+        {/* <Typography variant="subtitle2" color="textSecondary">
           {livestock.subcribers && livestock.subcribers.length}
-        </Typography>
+        </Typography> */}
         <Box flexGrow={1} />
-        <Rating value={livestock.seller.rating} size="small" readOnly />
+        <Rating value={livestock.member.rating} size="small" readOnly />
       </Box>
     </Card>
   );

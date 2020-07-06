@@ -29,7 +29,7 @@ const LivestockBrowseView: React.FC = () => {
           <Box mt={6}>loading...</Box>
         ) : (
           <Box mt={6}>
-            <Results livestock={data.allLivestock} />
+            <Results livestock={data.livestock} />
           </Box>
         )}
       </Container>
