@@ -3,26 +3,26 @@ import { client } from 'graphqlClient';
 
 export const getAllLiveStock = `{
   livestock {
+    id
+    likes
+    location
+    price
+    isLiked 
+    createdAt
+    updatedAt
+    description
+    member {
       id
-      likes
-      location
-      price
-      isLiked 
-      createdAt
-      updatedAt
-      description
-      member {
-        id
-        firstName
-        lastName
-        avatar
-        rating
+      firstName
+      lastName
+      avatar
+      rating
       }
-      name
-      water
-      class
-      coralType
-      images
+    name
+    water
+    class
+    coralType
+    images
     }
 }`;
 

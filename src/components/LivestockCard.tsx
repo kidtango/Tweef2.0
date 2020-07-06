@@ -55,9 +55,13 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
       <Box p={3}>
         <CardMedia className={classes.media} image={livestock.images[0]} />
         <Box display="flex" alignItems="center" mt={2}>
-          <Avatar alt="seller" src={livestock.member.avatar}>
+          <Avatar
+            alt="seller"
+            src={livestock.member && livestock.member.avatar}
+          >
             {getInitials(
-              livestock.member.firstName + ' ' + livestock.member.lastName
+              livestock.member &&
+                livestock.member.firstName + ' ' + livestock.member.lastName
             )}
           </Avatar>
           <Box ml={2}>
@@ -77,9 +81,10 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
                 to="#"
                 variant="h6"
               >
-                {livestock.member.firstName +
-                  ' ' +
-                  livestock.member.lastName[0]}
+                {livestock.member &&
+                  livestock.member.firstName +
+                    ' ' +
+                    livestock.member.lastName[0]}
               </Link>{' '}
               | Updated {moment(livestock.updatedAt).fromNow()}
             </Typography>
@@ -145,7 +150,11 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
           {livestock.subcribers && livestock.subcribers.length}
         </Typography> */}
         <Box flexGrow={1} />
-        <Rating value={livestock.member.rating} size="small" readOnly />
+        <Rating
+          value={livestock.member && livestock.member.rating}
+          size="small"
+          readOnly
+        />
       </Box>
     </Card>
   );

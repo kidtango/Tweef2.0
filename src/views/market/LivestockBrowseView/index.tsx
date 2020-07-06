@@ -6,7 +6,7 @@ import Page from 'components/Page';
 import Results from './Results';
 import Filter from './Filter';
 
-import useLivestocks from 'operations/queries/livestock/useLiveStocks';
+import useLivestocks from 'operations/queries/livestock/useLivestocks';
 
 const LivestockBrowseView: React.FC = () => {
   const classes = useStyles();

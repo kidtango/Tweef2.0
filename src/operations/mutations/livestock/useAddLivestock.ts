@@ -3,8 +3,8 @@ import { client } from 'graphqlClient';
 import { Livestock } from 'models/Livestock';
 
 export const addLivestock = `
-  mutation AddLivestock($name: String, $water: String, $class: String, $coralType: String, $description: String, $location: Int, $sellerId: String, $images: [String], $price: Int) {
-    insert_livestock_one(input: {
+  mutation AddLivestock($name: String!, $water: String!, $class: String!, $coralType: String!, $description: String!, $location: Int!, $sellerId: String!, $images: jsonb!, $price: money!) {
+    insert_livestock_one(object: {
       class: $class,
       coralType: $coralType,
       name: $name,
@@ -26,7 +26,7 @@ const createLivestock = async (variables: Livestock) => {
   return data;
 };
 
-export default function useCreateLivestock(
+export default function useAddLivestock(
   variables: MutationOptions<any, Livestock>
 ) {
   return useMutation(createLivestock, variables);
