@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import clsx from 'clsx';
 import { useDropzone } from 'react-dropzone';
+import axios from 'axios';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
@@ -13,10 +14,12 @@ import {
   ListItemText,
   Tooltip,
   Typography,
-  makeStyles
+  makeStyles,
+  Divider,
+  ListItemAvatar,
+  Avatar
 } from '@material-ui/core';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import bytesToSize from './bytesToSize';
 import { useSnackbar } from 'notistack';
 import { Trash as TrashIcon } from 'react-feather';
@@ -43,6 +46,7 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
 }) => {
   const classes = useStyles();
   const [files, setFiles] = useState<File[]>([]);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const { enqueueSnackbar } = useSnackbar();
   const [isNewFile, setIsNewFile] = useState<boolean>();
 
@@ -59,13 +63,15 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
   }, []);
 
   const handleRemoveAll = () => {
+    // Reset all states for imageUrls and uploaded files
     setFiles([]);
+    setImageUrls([]);
     setFieldValue('images', []);
   };
 
   const handleRemove = (targetIndex: number) => {
     const newFiles = files.filter(
-      (file, currentIndex) => currentIndex !== targetIndex
+      (_, currentIndex) => currentIndex !== targetIndex
     );
 
     setFiles(newFiles);
@@ -73,9 +79,43 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
     setFieldValue('images', newFiles);
   };
 
-  const handleUpload = () => {
-    setFieldValue('images', files);
-    enqueueSnackbar('Images uploaded', { variant: 'success' });
+  const handleRemoveImageUrl = (targetIndex: number) => {
+    const newImageUrls = imageUrls.filter(
+      (_, currentIndex) => currentIndex !== targetIndex
+    );
+
+    setImageUrls(newImageUrls);
+
+    setFieldValue('images', newImageUrls);
+  };
+
+  const handleUpload = (): void => {
+    files.forEach((file) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('tags', `reefking, acquarium hobby, saltwater`);
+      formData.append('upload_preset', 'tweef1');
+      formData.append('api_key', process.env.REACT_APP_CLOUDINARY_API_KEY!);
+      formData.append('timestamp', (Date.now() / 1000).toString());
+
+      // Call Cloudinary API to upload file
+      axios
+        .post(process.env.REACT_APP_CLOUDINARY_URL!, formData, {
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then((res) => {
+          const data = res.data;
+          setImageUrls((prevImages) => [...prevImages, data.secure_url]);
+          // Reset files
+          setFiles([]);
+          enqueueSnackbar('Image uploaded', { variant: 'success' });
+        })
+        .catch((error) => {
+          enqueueSnackbar('Error uploading image', { variant: 'error' });
+        });
+    });
+
+    setFieldValue('images', imageUrls);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -110,6 +150,35 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
           </Box>
         </div>
       </div>
+      {imageUrls.length > 0 && (
+        <>
+          <PerfectScrollbar options={{ suppressScrollX: true }}>
+            <List className={classes.list}>
+              {imageUrls.map((imageUrl, i) => (
+                <ListItem divider={i < imageUrls.length - 1} key={i}>
+                  <ListItemAvatar>
+                    <Avatar
+                      variant="rounded"
+                      alt="Travis Howard"
+                      src={imageUrl}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText primaryTypographyProps={{ variant: 'h5' }} />
+                  <Tooltip title="Remove this image">
+                    <IconButton
+                      edge="end"
+                      onClick={() => handleRemoveImageUrl(i)}
+                    >
+                      <TrashIcon />
+                    </IconButton>
+                  </Tooltip>
+                </ListItem>
+              ))}
+            </List>
+          </PerfectScrollbar>
+        </>
+      )}
+
       {files.length > 0 && (
         <>
           <PerfectScrollbar options={{ suppressScrollX: true }}>

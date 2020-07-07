@@ -15,7 +15,7 @@ export const addLivestock = `
       images: $images,
       price: $price
     }) {
-      id
+    id
     }
   }
 `;
@@ -27,7 +27,7 @@ const createLivestock = async (variables: Livestock) => {
 };
 
 export default function useAddLivestock(
-  variables: MutationOptions<any, Livestock>
+  variables: MutationOptions<any, Livestock> = {}
 ) {
   return useMutation(createLivestock, variables);
 }

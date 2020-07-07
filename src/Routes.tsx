@@ -28,12 +28,12 @@ interface RouteProps {
 
 const routesConfig: RouteProps[] = [
   {
-    path: '/app',
+    path: '/',
     layout: DashboardLayout,
     routes: [
       {
         exact: true,
-        path: '/app',
+        path: '/',
         component: () => <Redirect to="/app/market" />
       },
       {
@@ -43,7 +43,7 @@ const routesConfig: RouteProps[] = [
       },
       {
         exact: true,
-        path: '/app/livestock/create',
+        path: '/app/market/listItem',
         component: lazy(() => import('views/market/LivestockCreateView'))
       }
     ]

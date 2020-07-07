@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -20,6 +20,10 @@ import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import QuillEditor from 'components/QuillEditor';
 import FilesDropZone from 'components/FilesDropZone';
+import { MutationOptions } from 'react-query';
+
+import useAddLivestock from 'operations/mutations/livestock/useAddLivestock';
+import { Livestock } from 'models/Livestock';
 
 const waterTypes = [
   { id: '', name: '' },
@@ -37,6 +41,14 @@ const classifications = [
   { id: 'plant', name: 'Plant' }
 ];
 
+const coralTypes = [
+  { id: '', name: '' },
+  { id: 'SPS', name: 'SPS' },
+  { id: 'LPS', name: 'LPS' },
+  { id: 'Soft Coral', name: 'Soft Coral' },
+  { id: 'NA', name: 'NA' }
+];
+
 interface ProductCreateFormProps {
   className?: string;
   [x: string]: any;
@@ -48,6 +60,9 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
 }) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
+
+  const [addLivestockMutation] = useAddLivestock();
 
   return (
     <Formik
@@ -58,35 +73,56 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
         includesTaxes: false,
         isTaxable: false,
         name: '',
-        productCode: '',
-        productSku: '',
+        location: '',
         salePrice: '',
-        price: '',
+        price: 0.0,
         submit: '',
-        classification: ''
+        classification: '',
+        coralType: ''
       }}
       validationSchema={Yup.object().shape({
         category: Yup.string().max(255),
         description: Yup.string().max(250).required(),
         images: Yup.array().required(),
-        includesTaxes: Yup.bool().required(),
-        isTaxable: Yup.bool().required(),
         name: Yup.string().max(255).required(),
         price: Yup.number().min(0).required(),
-        productCode: Yup.string().max(255),
+        location: Yup.string().min(5),
         productSku: Yup.string().max(255),
         salePrice: Yup.number().min(0),
         classification: Yup.string().required(),
-        waterType: Yup.string().required()
+        waterType: Yup.string().required(),
+        coralType: Yup.string().required()
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-        console.log('clicked');
+        console.log('values', values);
         try {
-          console.log('values', values);
-          //api call
+          // Create livestock object from values captured by Formik
+          const newLivestock: Livestock = {
+            name: values.name,
+            price: values.price,
+            water: values.waterType as 'Saltwater' | 'Freshwater',
+            class: values.classification as
+              | 'Coral'
+              | 'Fish'
+              | 'Plant'
+              | 'Invertegrate',
+            coralType: values.coralType as 'SPS' | 'LPS' | 'Soft Coral' | 'NA',
+            description: values.description,
+            location: parseInt(values.location),
+            sellerId: 'd9ca54d7-5010-4fac-a204-03914ffeb6ea',
+            images: [
+              'https://topshelfaquatics.com/wp-content/uploads/2020/06/SB.D7.062520-1.jpg'
+            ]
+          };
+
+          // Api call using custom hook
+          await addLivestockMutation(newLivestock as Livestock);
+
           setStatus({ success: true });
           setSubmitting(false);
           enqueueSnackbar('Livestock Created', { variant: 'success' });
+
+          history.push('/app/market');
         } catch (err) {
           setErrors({ submit: err.message });
           setStatus({ success: false });
@@ -263,27 +299,34 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
                   </Box>
                   <Box mt={2}>
                     <TextField
-                      error={Boolean(touched.productCode && errors.productCode)}
                       fullWidth
-                      helperText={touched.productCode && errors.productCode}
-                      label="Product Code"
-                      name="productCode"
-                      onBlur={handleBlur}
+                      error={Boolean(touched.coralType && errors.coralType)}
+                      helperText={touched.coralType && errors.coralType}
+                      label="coralType"
+                      name="coralType"
                       onChange={handleChange}
-                      value={values.productCode}
+                      select
+                      SelectProps={{ native: true }}
+                      value={values.coralType}
                       variant="outlined"
-                    />
+                    >
+                      {coralTypes.map((coralType) => (
+                        <option key={coralType.id} value={coralType.id}>
+                          {coralType.name}
+                        </option>
+                      ))}
+                    </TextField>
                   </Box>
                   <Box mt={2}>
                     <TextField
-                      error={Boolean(touched.productSku && errors.productSku)}
+                      error={Boolean(touched.location && errors.location)}
                       fullWidth
-                      helperText={touched.productSku && errors.productSku}
-                      label="Product Sku"
-                      name="productSku"
+                      helperText={touched.location && errors.location}
+                      label="Seller Zip Code"
+                      name="location"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.productSku}
+                      value={values.location}
                       variant="outlined"
                     />
                   </Box>
@@ -294,7 +337,10 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
 
           {errors.submit && (
             <Box mt={3}>
-              <FormHelperText error>{errors.submit}</FormHelperText>
+              <FormHelperText error>
+                oppss... Something has gone wrong with the network, please try
+                again later
+              </FormHelperText>
             </Box>
           )}
 

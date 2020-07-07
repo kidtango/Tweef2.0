@@ -21,6 +21,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Users as UsersIcon } from 'react-feather';
 import moment from 'moment';
+import parse from 'html-react-parser';
 
 import { Livestock } from 'models/Livestock';
 import getInitials from 'utils/getInitials';
@@ -58,12 +59,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
           <Avatar
             alt="seller"
             src={livestock.member && livestock.member.avatar}
-          >
-            {getInitials(
-              livestock.member &&
-                livestock.member.firstName + ' ' + livestock.member.lastName
-            )}
-          </Avatar>
+          />
           <Box ml={2}>
             <Link
               color="textPrimary"
@@ -86,7 +82,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
                     ' ' +
                     livestock.member.lastName[0]}
               </Link>{' '}
-              | Updated {moment(livestock.updatedAt).fromNow()}
+              | Created {moment(livestock.createdAt).fromNow()}
             </Typography>
           </Box>
         </Box>
@@ -98,7 +94,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
       </Box>
       <Box pb={2} px={3}>
         <Typography color="textSecondary" variant="body2">
-          {livestock.description}
+          {parse(livestock.description)}
         </Typography>
       </Box>
       <Box py={2} px={3}>
@@ -139,17 +135,11 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
         <Typography variant="subtitle2" color="textSecondary">
           {likes}
         </Typography>
-        <SvgIcon
-          fontSize="small"
-          color="action"
-          className={classes.subscribersIcon}
-        >
-          <UsersIcon />
-        </SvgIcon>
-        {/* <Typography variant="subtitle2" color="textSecondary">
-          {livestock.subcribers && livestock.subcribers.length}
-        </Typography> */}
+
         <Box flexGrow={1} />
+        <Typography variant="subtitle2" color="textSecondary">
+          Seller Rating:
+        </Typography>
         <Rating
           value={livestock.member && livestock.member.rating}
           size="small"
@@ -165,7 +155,7 @@ export default LivestockCard;
 const useStyles = makeStyles((theme) => ({
   root: {},
   media: {
-    height: 200,
+    minHeight: 400,
     backgroundColor: theme.palette.background.dark
   },
   likedButton: {
