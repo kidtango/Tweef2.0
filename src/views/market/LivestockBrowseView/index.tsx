@@ -11,7 +11,7 @@ import useLivestocks from 'operations/queries/livestock/useLivestocks';
 const LivestockBrowseView: React.FC = () => {
   const classes = useStyles();
 
-  const { status, data, error, isFetching } = useLivestocks();
+  const { data, error, isFetching } = useLivestocks();
 
   if (error) {
     console.log(error);

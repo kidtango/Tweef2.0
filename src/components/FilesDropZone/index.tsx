@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import clsx from 'clsx';
 import { useDropzone } from 'react-dropzone';
-import axios from 'axios';
+
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
@@ -15,7 +15,6 @@ import {
   Tooltip,
   Typography,
   makeStyles,
-  Divider,
   ListItemAvatar,
   Avatar
 } from '@material-ui/core';
@@ -25,11 +24,15 @@ import { useSnackbar } from 'notistack';
 import { Trash as TrashIcon } from 'react-feather';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
+import Fab from '@material-ui/core/Fab';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
 
-// interface DropZoneFile extends File {}
+import useUploadImages from 'operations/mutations/uploadImage/useUploadImage';
 
 interface FilesDropZoneProps {
   className?: any;
+  images: string[];
   setFieldValue: (
     field: string,
     value: any,
@@ -46,17 +49,20 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
 }) => {
   const classes = useStyles();
   const [files, setFiles] = useState<File[]>([]);
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const { enqueueSnackbar } = useSnackbar();
-  const [isNewFile, setIsNewFile] = useState<boolean>();
+
+  // Custom hook that returns an axios request to Cloudinary API for uploading images
+  const [uploadImages, { data, error, status }] = useUploadImages();
 
   useEffect(() => {
-    if (files.length > images.length) {
-      setIsNewFile(true);
-    } else {
-      setIsNewFile(false);
+    if (status === 'success') {
+      setFieldValue('images', [...images, data!.secure_url]);
+      enqueueSnackbar('Image uploaded', { variant: 'success' });
+
+      // Reset files
+      setFiles([]);
     }
-  }, [files, images]);
+  }, [data]);
 
   const handleDrop = useCallback((acceptedFiles) => {
     setFiles((prevFiles) => [...prevFiles].concat(acceptedFiles));
@@ -65,7 +71,6 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
   const handleRemoveAll = () => {
     // Reset all states for imageUrls and uploaded files
     setFiles([]);
-    setImageUrls([]);
     setFieldValue('images', []);
   };
 
@@ -80,11 +85,9 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
   };
 
   const handleRemoveImageUrl = (targetIndex: number) => {
-    const newImageUrls = imageUrls.filter(
+    const newImageUrls = images.filter(
       (_, currentIndex) => currentIndex !== targetIndex
     );
-
-    setImageUrls(newImageUrls);
 
     setFieldValue('images', newImageUrls);
   };
@@ -98,24 +101,12 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
       formData.append('api_key', process.env.REACT_APP_CLOUDINARY_API_KEY!);
       formData.append('timestamp', (Date.now() / 1000).toString());
 
-      // Call Cloudinary API to upload file
-      axios
-        .post(process.env.REACT_APP_CLOUDINARY_URL!, formData, {
-          headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-        .then((res) => {
-          const data = res.data;
-          setImageUrls((prevImages) => [...prevImages, data.secure_url]);
-          // Reset files
-          setFiles([]);
-          enqueueSnackbar('Image uploaded', { variant: 'success' });
-        })
-        .catch((error) => {
-          enqueueSnackbar('Error uploading image', { variant: 'error' });
-        });
-    });
+      uploadImages(formData);
 
-    setFieldValue('images', imageUrls);
+      if (error) {
+        return enqueueSnackbar('Error uploading image', { variant: 'error' });
+      }
+    });
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -150,12 +141,14 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
           </Box>
         </div>
       </div>
-      {imageUrls.length > 0 && (
+
+      {/* List of imageURls  */}
+      {images.length > 0 && (
         <>
           <PerfectScrollbar options={{ suppressScrollX: true }}>
             <List className={classes.list}>
-              {imageUrls.map((imageUrl, i) => (
-                <ListItem divider={i < imageUrls.length - 1} key={i}>
+              {images.map((imageUrl, i) => (
+                <ListItem divider={i < images.length - 1} key={i}>
                   <ListItemAvatar>
                     <Avatar
                       variant="rounded"
@@ -179,6 +172,7 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
         </>
       )}
 
+      {/* List of files */}
       {files.length > 0 && (
         <>
           <PerfectScrollbar options={{ suppressScrollX: true }}>
@@ -209,15 +203,22 @@ const FilesDropZone: React.FC<FilesDropZoneProps> = ({
               </Button>
             </Tooltip>
             <Tooltip title="Upload new files">
-              <Button
-                color="secondary"
-                size="small"
-                variant="contained"
-                onClick={handleUpload}
-                disabled={!isNewFile}
-              >
-                <CloudUploadIcon />
-              </Button>
+              <div>
+                <Fab
+                  aria-label="save"
+                  color="primary"
+                  className={classes.buttonClassname}
+                  onClick={handleUpload}
+                >
+                  <CloudUploadIcon />
+                  {status === 'loading' && (
+                    <CircularProgress
+                      size={68}
+                      className={classes.fabProgress}
+                    />
+                  )}
+                </Fab>
+              </div>
             </Tooltip>
           </div>
         </>
@@ -250,6 +251,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
     '& > * + *': { marginLeft: theme.spacing(2) }
+  },
+  buttonClassname: {},
+  fabProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: -6,
+    left: -6,
+    zIndex: 1
   }
 }));
 

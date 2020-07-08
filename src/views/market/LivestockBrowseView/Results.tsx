@@ -55,7 +55,7 @@ const Results: React.FC<ResultsProps> = ({ livestock, ...rest }) => {
         mb={2}
       >
         <Typography className={classes.title} variant="h5" color="textPrimary">
-          Showing 10 items
+          Showing {livestock && livestock.length} items
         </Typography>
         <Box display="flex" alignItems="center">
           <Button

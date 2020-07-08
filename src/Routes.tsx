@@ -28,6 +28,11 @@ interface RouteProps {
 
 const routesConfig: RouteProps[] = [
   {
+    exact: true,
+    path: '/login',
+    component: lazy(() => import('views/auth/loginView'))
+  },
+  {
     path: '/',
     layout: DashboardLayout,
     routes: [
@@ -36,6 +41,7 @@ const routesConfig: RouteProps[] = [
         path: '/',
         component: () => <Redirect to="/app/market" />
       },
+
       {
         exact: true,
         path: '/app/market',
