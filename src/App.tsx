@@ -1,5 +1,4 @@
 import React from 'react';
-import { createBrowserHistory } from 'history';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
 import {
@@ -14,10 +13,11 @@ import { createTheme } from 'theme';
 import { Router } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 import Routes from 'Routes';
+import history from 'utils/history';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import { ReactQueryDevtools } from 'react-query-devtools';
 
-const history = createBrowserHistory();
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
 const useStyles = makeStyles(() =>
@@ -50,8 +50,17 @@ interface Props {}
 
 const App: React.FC = () => {
   useStyles();
+  const { isLoading, error } = useAuth0();
 
   const { settings } = useSettingsContext();
+
+  if (error) {
+    return <div>Oops... {error.message}</div>;
+  }
+
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
 
   return (
     <ThemeProvider theme={createTheme(settings!)}>

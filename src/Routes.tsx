@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { Switch, Redirect, Route, RouteComponentProps } from 'react-router-dom';
 import DashboardLayout from 'layouts/DashboardLayout';
+import AuthGuard from 'components/AuthGuard';
 
 interface RouteProps {
   exact?: boolean;
@@ -20,6 +21,7 @@ interface RouteProps {
   routes?: {
     exact?: boolean;
     path?: string;
+    guard?: ReactNode;
     component?:
       | ComponentType<RouteComponentProps<any>>
       | LazyExoticComponent<ComponentType<any>>;
@@ -49,6 +51,7 @@ const routesConfig: RouteProps[] = [
       },
       {
         exact: true,
+        guard: AuthGuard,
         path: '/app/market/listItem',
         component: lazy(() => import('views/market/LivestockCreateView'))
       }

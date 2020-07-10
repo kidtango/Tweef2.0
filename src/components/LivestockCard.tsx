@@ -10,7 +10,6 @@ import {
   Grid,
   IconButton,
   Link,
-  SvgIcon,
   Tooltip,
   Typography,
   colors,
@@ -19,12 +18,11 @@ import {
 import { Rating } from '@material-ui/lab';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import { Users as UsersIcon } from 'react-feather';
+
 import moment from 'moment';
 import parse from 'html-react-parser';
 
 import { Livestock } from 'models/Livestock';
-import getInitials from 'utils/getInitials';
 
 interface LivestockCardProps {
   livestock: Livestock;
@@ -56,10 +54,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
       <Box p={3}>
         <CardMedia className={classes.media} image={livestock.images[0]} />
         <Box display="flex" alignItems="center" mt={2}>
-          <Avatar
-            alt="seller"
-            src={livestock.member && livestock.member.avatar}
-          />
+          <Avatar alt="seller" src={livestock.user && livestock.user.picture} />
           <Box ml={2}>
             <Link
               color="textPrimary"
@@ -77,10 +72,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
                 to="#"
                 variant="h6"
               >
-                {livestock.member &&
-                  livestock.member.firstName +
-                    ' ' +
-                    livestock.member.lastName[0]}
+                {livestock.user && livestock.user.nick_name}
               </Link>{' '}
               | Created {moment(livestock.createdAt).fromNow()}
             </Typography>
@@ -109,7 +101,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
           </Grid>
           <Grid item>
             <Typography variant="h5" color="textPrimary">
-              {livestock.coralType}
+              {livestock.coral_type}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               Livestock Type
@@ -141,7 +133,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
           Seller Rating:
         </Typography>
         <Rating
-          value={livestock.member && livestock.member.rating}
+          value={livestock.user && livestock.user.rating}
           size="small"
           readOnly
         />

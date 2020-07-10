@@ -6,12 +6,12 @@ export const addLivestock = `
   mutation AddLivestock($name: String!, $water: String!, $class: String!, $coralType: String!, $description: String!, $location: Int!, $sellerId: String!, $images: jsonb!, $price: money!) {
     insert_livestock_one(object: {
       class: $class,
-      coralType: $coralType,
+      coral_type: $coralType,
       name: $name,
       water: $water,
       description: $description,
       location: $location,
-      sellerId: $sellerId,
+      seller_id: $sellerId,
       images: $images,
       price: $price
     }) {

@@ -11,17 +11,16 @@ export const getAllLiveStock = `{
     createdAt
     updatedAt
     description
-    member {
-      id
-      firstName
-      lastName
-      avatar
+    user {
+      auth0_id
+      nick_name
+      picture
       rating
       }
     name
     water
     class
-    coralType
+    coral_type
     images
     }
 }`;

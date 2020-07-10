@@ -1,4 +1,4 @@
-import { Member } from './Member';
+import { User } from './User';
 
 export interface Livestock {
   id?: string;
@@ -6,10 +6,10 @@ export interface Livestock {
   price: Number;
   water: 'Saltwater' | 'Freshwater';
   class: 'Invertegrate' | 'Fish' | 'Coral' | 'Plant';
-  coralType: 'SPS' | 'LPS' | 'Soft Coral' | 'NA';
+  coral_type: 'SPS' | 'LPS' | 'Soft Coral' | 'NA';
   description: string;
   location: number;
-  member?: Member;
+  user?: User;
   likes?: number | null;
   isLiked?: Boolean | null;
   images: string[];

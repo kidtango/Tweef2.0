@@ -1,5 +1,8 @@
-import React, { Children, ReactNode, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { Redirect } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useSnackbar } from 'notistack';
+import history from 'utils/history';
 
 interface AuthGuardProps {
   children: ReactElement;
@@ -7,12 +10,12 @@ interface AuthGuardProps {
 
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   //Todo: add real user data with Auth0
-  const account = {
-    user: 'scott'
-  };
+  const { user, loginWithRedirect } = useAuth0();
+  const { enqueueSnackbar } = useSnackbar();
 
-  if (!account.user) {
-    return <Redirect to="/login" />;
+  if (!user) {
+    loginWithRedirect();
+    return <Redirect to="/" />;
   }
 
   return children;

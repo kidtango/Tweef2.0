@@ -20,6 +20,8 @@ import Contacts from './components/Contacts';
 import Notifications from './components/Notifications';
 import Search from '../NavBar/components/Search';
 
+import { useAuth0 } from '@auth0/auth0-react';
+
 interface TopBarProps {
   className?: string;
   onMobileNavOpen?:
@@ -34,6 +36,7 @@ const TopBar: React.FC<TopBarProps> = ({
   ...rest
 }) => {
   const classes = useStyles();
+  const { user, isAuthenticated } = useAuth0();
 
   return (
     <AppBar className={clsx(classes.root, className)} {...rest}>

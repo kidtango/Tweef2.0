@@ -57,7 +57,7 @@ const TopBar: React.FC<TopBarProps> = ({ className, ...rest }) => {
         <Button
           color="secondary"
           component="a"
-          href="https://material-ui.com/store/items/devias-kit-pro"
+          href="#"
           variant="contained"
           size="small"
         >
