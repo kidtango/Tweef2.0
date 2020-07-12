@@ -1,0 +1,1728 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+# expression to compare columns of type Boolean. All fields are combined with logical 'AND'.
+input Boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+scalar date
+
+# expression to compare columns of type date. All fields are combined with logical 'AND'.
+input date_comparison_exp {
+  _eq: date
+  _gt: date
+  _gte: date
+  _in: [date!]
+  _is_null: Boolean
+  _lt: date
+  _lte: date
+  _neq: date
+  _nin: [date!]
+}
+
+# expression to compare columns of type Int. All fields are combined with logical 'AND'.
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+scalar jsonb
+
+# expression to compare columns of type jsonb. All fields are combined with logical 'AND'.
+input jsonb_comparison_exp {
+  # is the column contained in the given json value
+  _contained_in: jsonb
+
+  # does the column contain the given json value at the top level
+  _contains: jsonb
+  _eq: jsonb
+  _gt: jsonb
+  _gte: jsonb
+
+  # does the string exist as a top-level key in the column
+  _has_key: String
+
+  # do all of these strings exist as top-level keys in the column
+  _has_keys_all: [String!]
+
+  # do any of these strings exist as top-level keys in the column
+  _has_keys_any: [String!]
+  _in: [jsonb!]
+  _is_null: Boolean
+  _lt: jsonb
+  _lte: jsonb
+  _neq: jsonb
+  _nin: [jsonb!]
+}
+
+# columns and relationships of "likes"
+type likes {
+  id: String!
+
+  # An object relationship
+  livestock: livestock!
+  livestock_id: String!
+
+  # An object relationship
+  user: users!
+  user_id: String!
+}
+
+# aggregated selection of "likes"
+type likes_aggregate {
+  aggregate: likes_aggregate_fields
+  nodes: [likes!]!
+}
+
+# aggregate fields of "likes"
+type likes_aggregate_fields {
+  count(columns: [likes_select_column!], distinct: Boolean): Int
+  max: likes_max_fields
+  min: likes_min_fields
+}
+
+# order by aggregate values of table "likes"
+input likes_aggregate_order_by {
+  count: order_by
+  max: likes_max_order_by
+  min: likes_min_order_by
+}
+
+# input type for inserting array relation for remote table "likes"
+input likes_arr_rel_insert_input {
+  data: [likes_insert_input!]!
+  on_conflict: likes_on_conflict
+}
+
+# Boolean expression to filter rows from the table "likes". All fields are combined with a logical 'AND'.
+input likes_bool_exp {
+  _and: [likes_bool_exp]
+  _not: likes_bool_exp
+  _or: [likes_bool_exp]
+  id: String_comparison_exp
+  livestock: livestock_bool_exp
+  livestock_id: String_comparison_exp
+  user: users_bool_exp
+  user_id: String_comparison_exp
+}
+
+# unique or primary key constraints on table "likes"
+enum likes_constraint {
+  # unique or primary key constraint
+  likes_pkey
+}
+
+# input type for inserting data into table "likes"
+input likes_insert_input {
+  id: String
+  livestock: livestock_obj_rel_insert_input
+  livestock_id: String
+  user: users_obj_rel_insert_input
+  user_id: String
+}
+
+# aggregate max on columns
+type likes_max_fields {
+  id: String
+  livestock_id: String
+  user_id: String
+}
+
+# order by max() on columns of table "likes"
+input likes_max_order_by {
+  id: order_by
+  livestock_id: order_by
+  user_id: order_by
+}
+
+# aggregate min on columns
+type likes_min_fields {
+  id: String
+  livestock_id: String
+  user_id: String
+}
+
+# order by min() on columns of table "likes"
+input likes_min_order_by {
+  id: order_by
+  livestock_id: order_by
+  user_id: order_by
+}
+
+# response of any mutation on the table "likes"
+type likes_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [likes!]!
+}
+
+# input type for inserting object relation for remote table "likes"
+input likes_obj_rel_insert_input {
+  data: likes_insert_input!
+  on_conflict: likes_on_conflict
+}
+
+# on conflict condition type for table "likes"
+input likes_on_conflict {
+  constraint: likes_constraint!
+  update_columns: [likes_update_column!]!
+  where: likes_bool_exp
+}
+
+# ordering options when selecting data from "likes"
+input likes_order_by {
+  id: order_by
+  livestock: livestock_order_by
+  livestock_id: order_by
+  user: users_order_by
+  user_id: order_by
+}
+
+# primary key columns input for table: "likes"
+input likes_pk_columns_input {
+  id: String!
+}
+
+# select columns of table "likes"
+enum likes_select_column {
+  # column name
+  id
+
+  # column name
+  livestock_id
+
+  # column name
+  user_id
+}
+
+# input type for updating data in table "likes"
+input likes_set_input {
+  id: String
+  livestock_id: String
+  user_id: String
+}
+
+# update columns of table "likes"
+enum likes_update_column {
+  # column name
+  id
+
+  # column name
+  livestock_id
+
+  # column name
+  user_id
+}
+
+# columns and relationships of "livestock"
+type livestock {
+  class: String!
+  coral_type: String!
+  createdAt: timestamptz!
+  description: String!
+  id: String!
+  images(
+    # JSON select path
+    path: String
+  ): jsonb
+  is_public: Boolean
+  like_id: String
+
+  # An array relationship
+  likes(
+    # distinct select on columns
+    distinct_on: [likes_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [likes_order_by!]
+
+    # filter the rows returned
+    where: likes_bool_exp
+  ): [likes!]!
+
+  # An aggregated array relationship
+  likes_aggregate(
+    # distinct select on columns
+    distinct_on: [likes_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [likes_order_by!]
+
+    # filter the rows returned
+    where: likes_bool_exp
+  ): likes_aggregate!
+  location: Int!
+  name: String!
+  price: money!
+  seller_id: String
+  updatedAt: date
+
+  # An object relationship
+  user: users
+  water: String!
+}
+
+# aggregated selection of "livestock"
+type livestock_aggregate {
+  aggregate: livestock_aggregate_fields
+  nodes: [livestock!]!
+}
+
+# aggregate fields of "livestock"
+type livestock_aggregate_fields {
+  avg: livestock_avg_fields
+  count(columns: [livestock_select_column!], distinct: Boolean): Int
+  max: livestock_max_fields
+  min: livestock_min_fields
+  stddev: livestock_stddev_fields
+  stddev_pop: livestock_stddev_pop_fields
+  stddev_samp: livestock_stddev_samp_fields
+  sum: livestock_sum_fields
+  var_pop: livestock_var_pop_fields
+  var_samp: livestock_var_samp_fields
+  variance: livestock_variance_fields
+}
+
+# order by aggregate values of table "livestock"
+input livestock_aggregate_order_by {
+  avg: livestock_avg_order_by
+  count: order_by
+  max: livestock_max_order_by
+  min: livestock_min_order_by
+  stddev: livestock_stddev_order_by
+  stddev_pop: livestock_stddev_pop_order_by
+  stddev_samp: livestock_stddev_samp_order_by
+  sum: livestock_sum_order_by
+  var_pop: livestock_var_pop_order_by
+  var_samp: livestock_var_samp_order_by
+  variance: livestock_variance_order_by
+}
+
+# append existing jsonb value of filtered columns with new jsonb value
+input livestock_append_input {
+  images: jsonb
+}
+
+# input type for inserting array relation for remote table "livestock"
+input livestock_arr_rel_insert_input {
+  data: [livestock_insert_input!]!
+  on_conflict: livestock_on_conflict
+}
+
+# aggregate avg on columns
+type livestock_avg_fields {
+  location: Float
+  price: Float
+}
+
+# order by avg() on columns of table "livestock"
+input livestock_avg_order_by {
+  location: order_by
+  price: order_by
+}
+
+# Boolean expression to filter rows from the table "livestock". All fields are combined with a logical 'AND'.
+input livestock_bool_exp {
+  _and: [livestock_bool_exp]
+  _not: livestock_bool_exp
+  _or: [livestock_bool_exp]
+  class: String_comparison_exp
+  coral_type: String_comparison_exp
+  createdAt: timestamptz_comparison_exp
+  description: String_comparison_exp
+  id: String_comparison_exp
+  images: jsonb_comparison_exp
+  is_public: Boolean_comparison_exp
+  like_id: String_comparison_exp
+  likes: likes_bool_exp
+  location: Int_comparison_exp
+  name: String_comparison_exp
+  price: money_comparison_exp
+  seller_id: String_comparison_exp
+  updatedAt: date_comparison_exp
+  user: users_bool_exp
+  water: String_comparison_exp
+}
+
+# unique or primary key constraints on table "livestock"
+enum livestock_constraint {
+  # unique or primary key constraint
+  livestock_pkey
+}
+
+# delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+input livestock_delete_at_path_input {
+  images: [String]
+}
+
+# delete the array element with specified index (negative integers count from the
+# end). throws an error if top level container is not an array
+input livestock_delete_elem_input {
+  images: Int
+}
+
+# delete key/value pair or string element. key/value pairs are matched based on their key value
+input livestock_delete_key_input {
+  images: String
+}
+
+# input type for incrementing integer column in table "livestock"
+input livestock_inc_input {
+  location: Int
+  price: money
+}
+
+# input type for inserting data into table "livestock"
+input livestock_insert_input {
+  class: String
+  coral_type: String
+  createdAt: timestamptz
+  description: String
+  id: String
+  images: jsonb
+  is_public: Boolean
+  like_id: String
+  likes: likes_arr_rel_insert_input
+  location: Int
+  name: String
+  price: money
+  seller_id: String
+  updatedAt: date
+  user: users_obj_rel_insert_input
+  water: String
+}
+
+# aggregate max on columns
+type livestock_max_fields {
+  class: String
+  coral_type: String
+  createdAt: timestamptz
+  description: String
+  id: String
+  like_id: String
+  location: Int
+  name: String
+  price: money
+  seller_id: String
+  updatedAt: date
+  water: String
+}
+
+# order by max() on columns of table "livestock"
+input livestock_max_order_by {
+  class: order_by
+  coral_type: order_by
+  createdAt: order_by
+  description: order_by
+  id: order_by
+  like_id: order_by
+  location: order_by
+  name: order_by
+  price: order_by
+  seller_id: order_by
+  updatedAt: order_by
+  water: order_by
+}
+
+# aggregate min on columns
+type livestock_min_fields {
+  class: String
+  coral_type: String
+  createdAt: timestamptz
+  description: String
+  id: String
+  like_id: String
+  location: Int
+  name: String
+  price: money
+  seller_id: String
+  updatedAt: date
+  water: String
+}
+
+# order by min() on columns of table "livestock"
+input livestock_min_order_by {
+  class: order_by
+  coral_type: order_by
+  createdAt: order_by
+  description: order_by
+  id: order_by
+  like_id: order_by
+  location: order_by
+  name: order_by
+  price: order_by
+  seller_id: order_by
+  updatedAt: order_by
+  water: order_by
+}
+
+# response of any mutation on the table "livestock"
+type livestock_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [livestock!]!
+}
+
+# input type for inserting object relation for remote table "livestock"
+input livestock_obj_rel_insert_input {
+  data: livestock_insert_input!
+  on_conflict: livestock_on_conflict
+}
+
+# on conflict condition type for table "livestock"
+input livestock_on_conflict {
+  constraint: livestock_constraint!
+  update_columns: [livestock_update_column!]!
+  where: livestock_bool_exp
+}
+
+# ordering options when selecting data from "livestock"
+input livestock_order_by {
+  class: order_by
+  coral_type: order_by
+  createdAt: order_by
+  description: order_by
+  id: order_by
+  images: order_by
+  is_public: order_by
+  like_id: order_by
+  likes_aggregate: likes_aggregate_order_by
+  location: order_by
+  name: order_by
+  price: order_by
+  seller_id: order_by
+  updatedAt: order_by
+  user: users_order_by
+  water: order_by
+}
+
+# primary key columns input for table: "livestock"
+input livestock_pk_columns_input {
+  id: String!
+}
+
+# prepend existing jsonb value of filtered columns with new jsonb value
+input livestock_prepend_input {
+  images: jsonb
+}
+
+# select columns of table "livestock"
+enum livestock_select_column {
+  # column name
+  class
+
+  # column name
+  coral_type
+
+  # column name
+  createdAt
+
+  # column name
+  description
+
+  # column name
+  id
+
+  # column name
+  images
+
+  # column name
+  is_public
+
+  # column name
+  like_id
+
+  # column name
+  location
+
+  # column name
+  name
+
+  # column name
+  price
+
+  # column name
+  seller_id
+
+  # column name
+  updatedAt
+
+  # column name
+  water
+}
+
+# input type for updating data in table "livestock"
+input livestock_set_input {
+  class: String
+  coral_type: String
+  createdAt: timestamptz
+  description: String
+  id: String
+  images: jsonb
+  is_public: Boolean
+  like_id: String
+  location: Int
+  name: String
+  price: money
+  seller_id: String
+  updatedAt: date
+  water: String
+}
+
+# aggregate stddev on columns
+type livestock_stddev_fields {
+  location: Float
+  price: Float
+}
+
+# order by stddev() on columns of table "livestock"
+input livestock_stddev_order_by {
+  location: order_by
+  price: order_by
+}
+
+# aggregate stddev_pop on columns
+type livestock_stddev_pop_fields {
+  location: Float
+  price: Float
+}
+
+# order by stddev_pop() on columns of table "livestock"
+input livestock_stddev_pop_order_by {
+  location: order_by
+  price: order_by
+}
+
+# aggregate stddev_samp on columns
+type livestock_stddev_samp_fields {
+  location: Float
+  price: Float
+}
+
+# order by stddev_samp() on columns of table "livestock"
+input livestock_stddev_samp_order_by {
+  location: order_by
+  price: order_by
+}
+
+# aggregate sum on columns
+type livestock_sum_fields {
+  location: Int
+  price: money
+}
+
+# order by sum() on columns of table "livestock"
+input livestock_sum_order_by {
+  location: order_by
+  price: order_by
+}
+
+# update columns of table "livestock"
+enum livestock_update_column {
+  # column name
+  class
+
+  # column name
+  coral_type
+
+  # column name
+  createdAt
+
+  # column name
+  description
+
+  # column name
+  id
+
+  # column name
+  images
+
+  # column name
+  is_public
+
+  # column name
+  like_id
+
+  # column name
+  location
+
+  # column name
+  name
+
+  # column name
+  price
+
+  # column name
+  seller_id
+
+  # column name
+  updatedAt
+
+  # column name
+  water
+}
+
+# aggregate var_pop on columns
+type livestock_var_pop_fields {
+  location: Float
+  price: Float
+}
+
+# order by var_pop() on columns of table "livestock"
+input livestock_var_pop_order_by {
+  location: order_by
+  price: order_by
+}
+
+# aggregate var_samp on columns
+type livestock_var_samp_fields {
+  location: Float
+  price: Float
+}
+
+# order by var_samp() on columns of table "livestock"
+input livestock_var_samp_order_by {
+  location: order_by
+  price: order_by
+}
+
+# aggregate variance on columns
+type livestock_variance_fields {
+  location: Float
+  price: Float
+}
+
+# order by variance() on columns of table "livestock"
+input livestock_variance_order_by {
+  location: order_by
+  price: order_by
+}
+
+scalar money
+
+# expression to compare columns of type money. All fields are combined with logical 'AND'.
+input money_comparison_exp {
+  _eq: money
+  _gt: money
+  _gte: money
+  _in: [money!]
+  _is_null: Boolean
+  _lt: money
+  _lte: money
+  _neq: money
+  _nin: [money!]
+}
+
+# mutation root
+type mutation_root {
+  # delete data from the table: "likes"
+  delete_likes(
+    # filter the rows which have to be deleted
+    where: likes_bool_exp!
+  ): likes_mutation_response
+
+  # delete single row from the table: "likes"
+  delete_likes_by_pk(id: String!): likes
+
+  # delete data from the table: "livestock"
+  delete_livestock(
+    # filter the rows which have to be deleted
+    where: livestock_bool_exp!
+  ): livestock_mutation_response
+
+  # delete single row from the table: "livestock"
+  delete_livestock_by_pk(id: String!): livestock
+
+  # delete data from the table: "users"
+  delete_users(
+    # filter the rows which have to be deleted
+    where: users_bool_exp!
+  ): users_mutation_response
+
+  # delete single row from the table: "users"
+  delete_users_by_pk(auth0_id: String!): users
+
+  # insert data into the table: "likes"
+  insert_likes(
+    # the rows to be inserted
+    objects: [likes_insert_input!]!
+
+    # on conflict condition
+    on_conflict: likes_on_conflict
+  ): likes_mutation_response
+
+  # insert a single row into the table: "likes"
+  insert_likes_one(
+    # the row to be inserted
+    object: likes_insert_input!
+
+    # on conflict condition
+    on_conflict: likes_on_conflict
+  ): likes
+
+  # insert data into the table: "livestock"
+  insert_livestock(
+    # the rows to be inserted
+    objects: [livestock_insert_input!]!
+
+    # on conflict condition
+    on_conflict: livestock_on_conflict
+  ): livestock_mutation_response
+
+  # insert a single row into the table: "livestock"
+  insert_livestock_one(
+    # the row to be inserted
+    object: livestock_insert_input!
+
+    # on conflict condition
+    on_conflict: livestock_on_conflict
+  ): livestock
+
+  # insert data into the table: "users"
+  insert_users(
+    # the rows to be inserted
+    objects: [users_insert_input!]!
+
+    # on conflict condition
+    on_conflict: users_on_conflict
+  ): users_mutation_response
+
+  # insert a single row into the table: "users"
+  insert_users_one(
+    # the row to be inserted
+    object: users_insert_input!
+
+    # on conflict condition
+    on_conflict: users_on_conflict
+  ): users
+
+  # update data of the table: "likes"
+  update_likes(
+    # sets the columns of the filtered rows to the given values
+    _set: likes_set_input
+
+    # filter the rows which have to be updated
+    where: likes_bool_exp!
+  ): likes_mutation_response
+
+  # update single row of the table: "likes"
+  update_likes_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: likes_set_input
+    pk_columns: likes_pk_columns_input!
+  ): likes
+
+  # update data of the table: "livestock"
+  update_livestock(
+    # append existing jsonb value of filtered columns with new jsonb value
+    _append: livestock_append_input
+
+    # delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    _delete_at_path: livestock_delete_at_path_input
+
+    # delete the array element with specified index (negative integers count from
+    # the end). throws an error if top level container is not an array
+    _delete_elem: livestock_delete_elem_input
+
+    # delete key/value pair or string element. key/value pairs are matched based on their key value
+    _delete_key: livestock_delete_key_input
+
+    # increments the integer columns with given value of the filtered values
+    _inc: livestock_inc_input
+
+    # prepend existing jsonb value of filtered columns with new jsonb value
+    _prepend: livestock_prepend_input
+
+    # sets the columns of the filtered rows to the given values
+    _set: livestock_set_input
+
+    # filter the rows which have to be updated
+    where: livestock_bool_exp!
+  ): livestock_mutation_response
+
+  # update single row of the table: "livestock"
+  update_livestock_by_pk(
+    # append existing jsonb value of filtered columns with new jsonb value
+    _append: livestock_append_input
+
+    # delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    _delete_at_path: livestock_delete_at_path_input
+
+    # delete the array element with specified index (negative integers count from
+    # the end). throws an error if top level container is not an array
+    _delete_elem: livestock_delete_elem_input
+
+    # delete key/value pair or string element. key/value pairs are matched based on their key value
+    _delete_key: livestock_delete_key_input
+
+    # increments the integer columns with given value of the filtered values
+    _inc: livestock_inc_input
+
+    # prepend existing jsonb value of filtered columns with new jsonb value
+    _prepend: livestock_prepend_input
+
+    # sets the columns of the filtered rows to the given values
+    _set: livestock_set_input
+    pk_columns: livestock_pk_columns_input!
+  ): livestock
+
+  # update data of the table: "users"
+  update_users(
+    # increments the integer columns with given value of the filtered values
+    _inc: users_inc_input
+
+    # sets the columns of the filtered rows to the given values
+    _set: users_set_input
+
+    # filter the rows which have to be updated
+    where: users_bool_exp!
+  ): users_mutation_response
+
+  # update single row of the table: "users"
+  update_users_by_pk(
+    # increments the integer columns with given value of the filtered values
+    _inc: users_inc_input
+
+    # sets the columns of the filtered rows to the given values
+    _set: users_set_input
+    pk_columns: users_pk_columns_input!
+  ): users
+}
+
+# column ordering options
+enum order_by {
+  # in the ascending order, nulls last
+  asc
+
+  # in the ascending order, nulls first
+  asc_nulls_first
+
+  # in the ascending order, nulls last
+  asc_nulls_last
+
+  # in the descending order, nulls first
+  desc
+
+  # in the descending order, nulls first
+  desc_nulls_first
+
+  # in the descending order, nulls last
+  desc_nulls_last
+}
+
+# query root
+type query_root {
+  # fetch data from the table: "likes"
+  likes(
+    # distinct select on columns
+    distinct_on: [likes_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [likes_order_by!]
+
+    # filter the rows returned
+    where: likes_bool_exp
+  ): [likes!]!
+
+  # fetch aggregated fields from the table: "likes"
+  likes_aggregate(
+    # distinct select on columns
+    distinct_on: [likes_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [likes_order_by!]
+
+    # filter the rows returned
+    where: likes_bool_exp
+  ): likes_aggregate!
+
+  # fetch data from the table: "likes" using primary key columns
+  likes_by_pk(id: String!): likes
+
+  # fetch data from the table: "livestock"
+  livestock(
+    # distinct select on columns
+    distinct_on: [livestock_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [livestock_order_by!]
+
+    # filter the rows returned
+    where: livestock_bool_exp
+  ): [livestock!]!
+
+  # fetch aggregated fields from the table: "livestock"
+  livestock_aggregate(
+    # distinct select on columns
+    distinct_on: [livestock_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [livestock_order_by!]
+
+    # filter the rows returned
+    where: livestock_bool_exp
+  ): livestock_aggregate!
+
+  # fetch data from the table: "livestock" using primary key columns
+  livestock_by_pk(id: String!): livestock
+
+  # fetch data from the table: "users"
+  users(
+    # distinct select on columns
+    distinct_on: [users_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [users_order_by!]
+
+    # filter the rows returned
+    where: users_bool_exp
+  ): [users!]!
+
+  # fetch aggregated fields from the table: "users"
+  users_aggregate(
+    # distinct select on columns
+    distinct_on: [users_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [users_order_by!]
+
+    # filter the rows returned
+    where: users_bool_exp
+  ): users_aggregate!
+
+  # fetch data from the table: "users" using primary key columns
+  users_by_pk(auth0_id: String!): users
+}
+
+# expression to compare columns of type String. All fields are combined with logical 'AND'.
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+  _ilike: String
+  _in: [String!]
+  _is_null: Boolean
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  _nilike: String
+  _nin: [String!]
+  _nlike: String
+  _nsimilar: String
+  _similar: String
+}
+
+# subscription root
+type subscription_root {
+  # fetch data from the table: "likes"
+  likes(
+    # distinct select on columns
+    distinct_on: [likes_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [likes_order_by!]
+
+    # filter the rows returned
+    where: likes_bool_exp
+  ): [likes!]!
+
+  # fetch aggregated fields from the table: "likes"
+  likes_aggregate(
+    # distinct select on columns
+    distinct_on: [likes_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [likes_order_by!]
+
+    # filter the rows returned
+    where: likes_bool_exp
+  ): likes_aggregate!
+
+  # fetch data from the table: "likes" using primary key columns
+  likes_by_pk(id: String!): likes
+
+  # fetch data from the table: "livestock"
+  livestock(
+    # distinct select on columns
+    distinct_on: [livestock_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [livestock_order_by!]
+
+    # filter the rows returned
+    where: livestock_bool_exp
+  ): [livestock!]!
+
+  # fetch aggregated fields from the table: "livestock"
+  livestock_aggregate(
+    # distinct select on columns
+    distinct_on: [livestock_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [livestock_order_by!]
+
+    # filter the rows returned
+    where: livestock_bool_exp
+  ): livestock_aggregate!
+
+  # fetch data from the table: "livestock" using primary key columns
+  livestock_by_pk(id: String!): livestock
+
+  # fetch data from the table: "users"
+  users(
+    # distinct select on columns
+    distinct_on: [users_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [users_order_by!]
+
+    # filter the rows returned
+    where: users_bool_exp
+  ): [users!]!
+
+  # fetch aggregated fields from the table: "users"
+  users_aggregate(
+    # distinct select on columns
+    distinct_on: [users_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [users_order_by!]
+
+    # filter the rows returned
+    where: users_bool_exp
+  ): users_aggregate!
+
+  # fetch data from the table: "users" using primary key columns
+  users_by_pk(auth0_id: String!): users
+}
+
+scalar timestamptz
+
+# expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+# columns and relationships of "users"
+type users {
+  auth0_id: String!
+  created_at: date!
+  email: String
+  family_name: String
+  given_name: String
+  kind: String
+  last_seen: date!
+  like_id: String
+
+  # An array relationship
+  likes(
+    # distinct select on columns
+    distinct_on: [likes_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [likes_order_by!]
+
+    # filter the rows returned
+    where: likes_bool_exp
+  ): [likes!]!
+
+  # An aggregated array relationship
+  likes_aggregate(
+    # distinct select on columns
+    distinct_on: [likes_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [likes_order_by!]
+
+    # filter the rows returned
+    where: likes_bool_exp
+  ): likes_aggregate!
+
+  # An array relationship
+  livestock(
+    # distinct select on columns
+    distinct_on: [livestock_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [livestock_order_by!]
+
+    # filter the rows returned
+    where: livestock_bool_exp
+  ): [livestock!]!
+
+  # An aggregated array relationship
+  livestock_aggregate(
+    # distinct select on columns
+    distinct_on: [livestock_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [livestock_order_by!]
+
+    # filter the rows returned
+    where: livestock_bool_exp
+  ): livestock_aggregate!
+  livestock_id: String
+  name: String!
+  nick_name: String
+  picture: String
+  rank: String
+  rating: Int
+  updated_at: date
+}
+
+# aggregated selection of "users"
+type users_aggregate {
+  aggregate: users_aggregate_fields
+  nodes: [users!]!
+}
+
+# aggregate fields of "users"
+type users_aggregate_fields {
+  avg: users_avg_fields
+  count(columns: [users_select_column!], distinct: Boolean): Int
+  max: users_max_fields
+  min: users_min_fields
+  stddev: users_stddev_fields
+  stddev_pop: users_stddev_pop_fields
+  stddev_samp: users_stddev_samp_fields
+  sum: users_sum_fields
+  var_pop: users_var_pop_fields
+  var_samp: users_var_samp_fields
+  variance: users_variance_fields
+}
+
+# order by aggregate values of table "users"
+input users_aggregate_order_by {
+  avg: users_avg_order_by
+  count: order_by
+  max: users_max_order_by
+  min: users_min_order_by
+  stddev: users_stddev_order_by
+  stddev_pop: users_stddev_pop_order_by
+  stddev_samp: users_stddev_samp_order_by
+  sum: users_sum_order_by
+  var_pop: users_var_pop_order_by
+  var_samp: users_var_samp_order_by
+  variance: users_variance_order_by
+}
+
+# input type for inserting array relation for remote table "users"
+input users_arr_rel_insert_input {
+  data: [users_insert_input!]!
+  on_conflict: users_on_conflict
+}
+
+# aggregate avg on columns
+type users_avg_fields {
+  rating: Float
+}
+
+# order by avg() on columns of table "users"
+input users_avg_order_by {
+  rating: order_by
+}
+
+# Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'.
+input users_bool_exp {
+  _and: [users_bool_exp]
+  _not: users_bool_exp
+  _or: [users_bool_exp]
+  auth0_id: String_comparison_exp
+  created_at: date_comparison_exp
+  email: String_comparison_exp
+  family_name: String_comparison_exp
+  given_name: String_comparison_exp
+  kind: String_comparison_exp
+  last_seen: date_comparison_exp
+  like_id: String_comparison_exp
+  likes: likes_bool_exp
+  livestock: livestock_bool_exp
+  livestock_id: String_comparison_exp
+  name: String_comparison_exp
+  nick_name: String_comparison_exp
+  picture: String_comparison_exp
+  rank: String_comparison_exp
+  rating: Int_comparison_exp
+  updated_at: date_comparison_exp
+}
+
+# unique or primary key constraints on table "users"
+enum users_constraint {
+  # unique or primary key constraint
+  users_pkey
+}
+
+# input type for incrementing integer column in table "users"
+input users_inc_input {
+  rating: Int
+}
+
+# input type for inserting data into table "users"
+input users_insert_input {
+  auth0_id: String
+  created_at: date
+  email: String
+  family_name: String
+  given_name: String
+  kind: String
+  last_seen: date
+  like_id: String
+  likes: likes_arr_rel_insert_input
+  livestock: livestock_arr_rel_insert_input
+  livestock_id: String
+  name: String
+  nick_name: String
+  picture: String
+  rank: String
+  rating: Int
+  updated_at: date
+}
+
+# aggregate max on columns
+type users_max_fields {
+  auth0_id: String
+  created_at: date
+  email: String
+  family_name: String
+  given_name: String
+  kind: String
+  last_seen: date
+  like_id: String
+  livestock_id: String
+  name: String
+  nick_name: String
+  picture: String
+  rank: String
+  rating: Int
+  updated_at: date
+}
+
+# order by max() on columns of table "users"
+input users_max_order_by {
+  auth0_id: order_by
+  created_at: order_by
+  email: order_by
+  family_name: order_by
+  given_name: order_by
+  kind: order_by
+  last_seen: order_by
+  like_id: order_by
+  livestock_id: order_by
+  name: order_by
+  nick_name: order_by
+  picture: order_by
+  rank: order_by
+  rating: order_by
+  updated_at: order_by
+}
+
+# aggregate min on columns
+type users_min_fields {
+  auth0_id: String
+  created_at: date
+  email: String
+  family_name: String
+  given_name: String
+  kind: String
+  last_seen: date
+  like_id: String
+  livestock_id: String
+  name: String
+  nick_name: String
+  picture: String
+  rank: String
+  rating: Int
+  updated_at: date
+}
+
+# order by min() on columns of table "users"
+input users_min_order_by {
+  auth0_id: order_by
+  created_at: order_by
+  email: order_by
+  family_name: order_by
+  given_name: order_by
+  kind: order_by
+  last_seen: order_by
+  like_id: order_by
+  livestock_id: order_by
+  name: order_by
+  nick_name: order_by
+  picture: order_by
+  rank: order_by
+  rating: order_by
+  updated_at: order_by
+}
+
+# response of any mutation on the table "users"
+type users_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [users!]!
+}
+
+# input type for inserting object relation for remote table "users"
+input users_obj_rel_insert_input {
+  data: users_insert_input!
+  on_conflict: users_on_conflict
+}
+
+# on conflict condition type for table "users"
+input users_on_conflict {
+  constraint: users_constraint!
+  update_columns: [users_update_column!]!
+  where: users_bool_exp
+}
+
+# ordering options when selecting data from "users"
+input users_order_by {
+  auth0_id: order_by
+  created_at: order_by
+  email: order_by
+  family_name: order_by
+  given_name: order_by
+  kind: order_by
+  last_seen: order_by
+  like_id: order_by
+  likes_aggregate: likes_aggregate_order_by
+  livestock_aggregate: livestock_aggregate_order_by
+  livestock_id: order_by
+  name: order_by
+  nick_name: order_by
+  picture: order_by
+  rank: order_by
+  rating: order_by
+  updated_at: order_by
+}
+
+# primary key columns input for table: "users"
+input users_pk_columns_input {
+  auth0_id: String!
+}
+
+# select columns of table "users"
+enum users_select_column {
+  # column name
+  auth0_id
+
+  # column name
+  created_at
+
+  # column name
+  email
+
+  # column name
+  family_name
+
+  # column name
+  given_name
+
+  # column name
+  kind
+
+  # column name
+  last_seen
+
+  # column name
+  like_id
+
+  # column name
+  livestock_id
+
+  # column name
+  name
+
+  # column name
+  nick_name
+
+  # column name
+  picture
+
+  # column name
+  rank
+
+  # column name
+  rating
+
+  # column name
+  updated_at
+}
+
+# input type for updating data in table "users"
+input users_set_input {
+  auth0_id: String
+  created_at: date
+  email: String
+  family_name: String
+  given_name: String
+  kind: String
+  last_seen: date
+  like_id: String
+  livestock_id: String
+  name: String
+  nick_name: String
+  picture: String
+  rank: String
+  rating: Int
+  updated_at: date
+}
+
+# aggregate stddev on columns
+type users_stddev_fields {
+  rating: Float
+}
+
+# order by stddev() on columns of table "users"
+input users_stddev_order_by {
+  rating: order_by
+}
+
+# aggregate stddev_pop on columns
+type users_stddev_pop_fields {
+  rating: Float
+}
+
+# order by stddev_pop() on columns of table "users"
+input users_stddev_pop_order_by {
+  rating: order_by
+}
+
+# aggregate stddev_samp on columns
+type users_stddev_samp_fields {
+  rating: Float
+}
+
+# order by stddev_samp() on columns of table "users"
+input users_stddev_samp_order_by {
+  rating: order_by
+}
+
+# aggregate sum on columns
+type users_sum_fields {
+  rating: Int
+}
+
+# order by sum() on columns of table "users"
+input users_sum_order_by {
+  rating: order_by
+}
+
+# update columns of table "users"
+enum users_update_column {
+  # column name
+  auth0_id
+
+  # column name
+  created_at
+
+  # column name
+  email
+
+  # column name
+  family_name
+
+  # column name
+  given_name
+
+  # column name
+  kind
+
+  # column name
+  last_seen
+
+  # column name
+  like_id
+
+  # column name
+  livestock_id
+
+  # column name
+  name
+
+  # column name
+  nick_name
+
+  # column name
+  picture
+
+  # column name
+  rank
+
+  # column name
+  rating
+
+  # column name
+  updated_at
+}
+
+# aggregate var_pop on columns
+type users_var_pop_fields {
+  rating: Float
+}
+
+# order by var_pop() on columns of table "users"
+input users_var_pop_order_by {
+  rating: order_by
+}
+
+# aggregate var_samp on columns
+type users_var_samp_fields {
+  rating: Float
+}
+
+# order by var_samp() on columns of table "users"
+input users_var_samp_order_by {
+  rating: order_by
+}
+
+# aggregate variance on columns
+type users_variance_fields {
+  rating: Float
+}
+
+# order by variance() on columns of table "users"
+input users_variance_order_by {
+  rating: order_by
+}

@@ -1,5 +1,20 @@
 import { User } from './User';
 
+export interface Like {
+  id: string;
+  user: {
+    auth0_id: string;
+  };
+  livestock: {
+    id: string;
+  };
+  livestock_id: string;
+}
+
+export interface CreateLike {
+  livestock_id: string;
+}
+
 export interface Livestock {
   id?: string;
   name: string;
@@ -10,8 +25,7 @@ export interface Livestock {
   description: string;
   location: number;
   user?: User;
-  likes?: number | null;
-  isLiked?: Boolean | null;
+  likes?: Like[];
   images: string[];
   createdAt?: Date;
   updatedAt?: Date;

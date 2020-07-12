@@ -1,17 +1,16 @@
 import { useMutation, MutationOptions } from 'react-query';
-import { client } from 'graphqlClient';
+import { client } from 'graphqlClient/authenticatedGQLClient';
 import { Livestock } from 'models/Livestock';
 
 export const addLivestock = `
-  mutation AddLivestock($name: String!, $water: String!, $class: String!, $coralType: String!, $description: String!, $location: Int!, $sellerId: String!, $images: jsonb!, $price: money!) {
+  mutation AddLivestock($name: String!, $water: String!, $class: String!, $coral_type: String!, $description: String!, $location: Int!, $images: jsonb!, $price: money!) {
     insert_livestock_one(object: {
       class: $class,
-      coral_type: $coralType,
+      coral_type: $coral_type,
       name: $name,
       water: $water,
       description: $description,
       location: $location,
-      seller_id: $sellerId,
       images: $images,
       price: $price
     }) {

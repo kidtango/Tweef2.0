@@ -60,7 +60,8 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
-  const [addLivestockMutation] = useAddLivestock();
+  const [addLivestockMutation, { error }] = useAddLivestock();
+  console.log('error', error);
 
   const { user, isAuthenticated } = useAuth0();
 
@@ -112,7 +113,7 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
             coral_type: values.coralType as 'SPS' | 'LPS' | 'Soft Coral' | 'NA',
             description: values.description,
             location: parseInt(values.location),
-            sellerId: user.sub,
+            // sellerId: user.sub,
             images: values.images
           };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import {
@@ -18,11 +18,18 @@ import {
 import { Rating } from '@material-ui/lab';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import moment from 'moment';
 import parse from 'html-react-parser';
 
-import { Livestock } from 'models/Livestock';
+import { Livestock, CreateLike } from 'models/Livestock';
+import useInsertLike from 'operations/mutations/like/useAddLike';
+import useDeleteLike, {
+  LikeDelete
+} from 'operations/mutations/like/useDeleteLike';
+
+import { useSnackbar } from 'notistack';
 
 interface LivestockCardProps {
   livestock: Livestock;
@@ -36,17 +43,73 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
   ...rest
 }) => {
   const classes = useStyles();
-  const [isLiked, setLiked] = useState(livestock.isLiked || false);
-  const [likes, setLikes] = useState(livestock.likes || 0);
+  const [isLiked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(livestock.likes?.length || 0);
+  const { user, isAuthenticated } = useAuth0();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const handleLike = () => {
-    setLiked(true);
-    setLikes((prevLikes) => prevLikes + 1);
+  const [inserLike] = useInsertLike({
+    onMutate: () => {
+      setLiked(true);
+      setLikes((prevLikes) => prevLikes + 1);
+    },
+    onError: () => {
+      setLiked(false);
+      setLikes((prevLikes) => prevLikes - 1);
+      enqueueSnackbar('Opps...Something went wrong, please try again later', {
+        variant: 'error'
+      });
+    }
+  });
+
+  const [deleteLike] = useDeleteLike({
+    // On success, decreminting like counter
+    onMutate: () => {
+      setLiked(false);
+      setLikes((prevLikes) => prevLikes - 1);
+    },
+    // On failure, switch back to original like counter state by incrementing like counter
+    onError: () => {
+      setLiked(true);
+      setLikes((prevLikes) => prevLikes + 1);
+      enqueueSnackbar('Opps...Something went wrong, please try again later', {
+        variant: 'error'
+      });
+    }
+  });
+
+  useEffect(() => {
+    if (livestock && livestock.likes && livestock.likes.length > 0) {
+      livestock.likes.map((like) => {
+        if (like.user.auth0_id === user.sub) {
+          setLiked(true);
+        }
+      });
+    }
+  }, []);
+
+  const handleLike = (livestock_id: string) => {
+    if (!isAuthenticated)
+      return enqueueSnackbar('Please login first before liking an item', {
+        variant: 'error'
+      });
+
+    const newLike: CreateLike = {
+      livestock_id
+    };
+    inserLike(newLike);
   };
 
   const handleUnlike = () => {
-    setLiked(false);
-    setLikes((prevLikes) => prevLikes - 1);
+    if (!isAuthenticated)
+      return enqueueSnackbar('Please login first before liking an item', {
+        variant: 'error'
+      });
+
+    const targetLike: LikeDelete = {
+      user_id: user.sub
+    };
+    deleteLike(targetLike);
   };
 
   return (
@@ -119,7 +182,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
           </Tooltip>
         ) : (
           <Tooltip title="Like">
-            <IconButton onClick={handleLike}>
+            <IconButton onClick={() => handleLike(livestock.id!)}>
               <FavoriteBorderIcon fontSize="small" />
             </IconButton>
           </Tooltip>

@@ -1,13 +1,17 @@
 import { useQuery } from 'react-query';
-import { client } from 'graphqlClient';
+import { client } from 'graphqlClient/publicGQLClient';
 
 export const getAllLiveStock = `{
-  livestock {
+  livestock(limit: 10, where: {is_public: {_eq: true}}) {
     id
-    likes
+    likes {
+      id
+      user {
+        auth0_id
+      }
+    }
     location
     price
-    isLiked 
     createdAt
     updatedAt
     description
