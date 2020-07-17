@@ -17,11 +17,12 @@ import { Livestock } from 'models/Livestock';
 import LivestockCard from 'components/LivestockCard';
 
 interface ResultsProps {
-  livestock: Livestock[];
+  data: { livestock: Livestock[] }[];
   [x: string]: any;
 }
 
-const Results: React.FC<ResultsProps> = ({ livestock, ...rest }) => {
+const Results: React.FC<ResultsProps> = ({ data, ...rest }) => {
+  console.log('data', data);
   const classes = useStyles();
   const sortRef = useRef(null);
   const [openSort, setOpenSort] = useState(false);
@@ -55,7 +56,7 @@ const Results: React.FC<ResultsProps> = ({ livestock, ...rest }) => {
         mb={2}
       >
         <Typography className={classes.title} variant="h5" color="textPrimary">
-          Showing {livestock && livestock.length} items
+          Showing {data && data[0].livestock && data[0].livestock.length} items
         </Typography>
         <Box display="flex" alignItems="center">
           <Button
@@ -80,21 +81,27 @@ const Results: React.FC<ResultsProps> = ({ livestock, ...rest }) => {
       </Box>
       {/* Livestock cards */}
       <Grid container spacing={3} className={classes.livestockCards}>
-        {livestock.map((item) => (
-          <Grid
-            item
-            key={item.id}
-            md={mode === 'grid' ? 4 : 12}
-            sm={mode === 'grid' ? 6 : 12}
-            xs={12}
-          >
-            <LivestockCard livestock={item} />
-          </Grid>
+        {data.map((group) => (
+          <>
+            {group.livestock.map((item) => (
+              <>
+                <Grid
+                  item
+                  key={item.id}
+                  md={mode === 'grid' ? 4 : 12}
+                  sm={mode === 'grid' ? 6 : 12}
+                  xs={12}
+                >
+                  <LivestockCard livestock={item} />
+                </Grid>
+              </>
+            ))}
+          </>
         ))}
       </Grid>
-      <Box mt={6} display="flex" justifyContent="center">
+      {/* <Box mt={6} display="flex" justifyContent="center">
         <Pagination count={3} />
-      </Box>
+      </Box> */}
       <Menu
         anchorEl={sortRef.current}
         onClose={handleSortClose}

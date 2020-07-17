@@ -11,7 +11,6 @@ interface AuthGuardProps {
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   //Todo: add real user data with Auth0
   const { user, loginWithRedirect } = useAuth0();
-  const { enqueueSnackbar } = useSnackbar();
 
   if (!user) {
     loginWithRedirect();

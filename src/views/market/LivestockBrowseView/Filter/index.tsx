@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import {
   Box,
   Card,
-  Checkbox,
+  Button,
   Chip,
   Divider,
   FormControlLabel,
@@ -21,6 +21,10 @@ const selectOptions = [
   {
     label: 'CATEGORY',
     options: ['SPS', 'LPS', 'Soft Corals', 'Plants', 'Fish']
+  },
+  {
+    label: 'LOCATION',
+    options: ['30 Miles', '50 Miles', '100 Miles', 'anywhere']
   }
 ];
 
@@ -33,7 +37,7 @@ const Filter: React.FC<FilterProps> = ({ className, ...rest }) => {
   const classes = useStyles();
   const [inputValue, setInputValue] = useState('');
   const [chips, setChips] = useState(['SPS', 'LPS']);
-  const [distanceToggle, setDistanceToggle] = React.useState(true);
+  const [distanceToggle, setDistanceToggle] = useState(true);
 
   const handleInputChange = (event: any) => {
     event.persist();
@@ -100,15 +104,10 @@ const Filter: React.FC<FilterProps> = ({ className, ...rest }) => {
           />
         ))}
         <Box flexGrow={1} />
-        <FormControlLabel
-          control={
-            <Checkbox
-              onChange={handleDistanceChange}
-              checked={distanceToggle}
-            />
-          }
-          label="Nationwide"
-        />
+
+        <Button variant="text" color="primary">
+          Search
+        </Button>
       </Box>
     </Card>
   );

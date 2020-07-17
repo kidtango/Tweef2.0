@@ -1,5 +1,6 @@
 import { useQuery } from 'react-query';
 import { client } from 'graphqlClient/publicGQLClient';
+import { Livestock } from 'models/Livestock';
 
 export const getAllLiveStock = `{
   livestock(limit: 10, where: {is_public: {_eq: true}}) {

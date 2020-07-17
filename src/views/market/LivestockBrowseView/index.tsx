@@ -5,18 +5,48 @@ import Page from 'components/Page';
 
 import Results from './Results';
 import Filter from './Filter';
+import { Livestock } from 'models/Livestock';
 
-import useLivestocks from 'operations/queries/livestock/useLivestocks';
+import useLivestockInfiniteQuery from 'operations/queries/livestock/useLivestockInfiniteQuery';
+import useIntersectionObserver from 'hooks/useIntersectionObserver';
+
+interface QueryResult {
+  status: string;
+  data: Livestock[];
+  error: any;
+  isFetching: any;
+  isFetchingMore: any;
+  fetchMore: any;
+  canFetchMore: any;
+}
 
 const LivestockBrowseView: React.FC = () => {
   const classes = useStyles();
+  const loadMoreButtonRef: any = React.useRef();
 
-  const { data, error, isFetching } = useLivestocks();
+  const {
+    status,
+    data,
+    error,
+    isFetching,
+    isFetchingMore,
+    fetchMore,
+    canFetchMore
+  } = useLivestockInfiniteQuery();
+
+  useIntersectionObserver({
+    target: loadMoreButtonRef,
+    onIntersect: fetchMore
+  });
 
   if (error) {
     console.log(error);
     return <div>opps... Something went wrong, please refresh browser</div>;
   }
+
+  const handleFetchMore = () => {
+    fetchMore();
+  };
 
   return (
     <Page title="Market" className={classes.root}>
@@ -25,13 +55,19 @@ const LivestockBrowseView: React.FC = () => {
         <Box mt={3}>
           <Filter />
         </Box>
-        {isFetching ? (
+
+        {status === 'loading' ? (
           <Box mt={6}>loading...</Box>
         ) : (
-          <Box mt={6}>
-            <Results livestock={data.livestock} />
-          </Box>
+          <Box mt={6}>{<Results data={data} />}</Box>
         )}
+        <button
+          ref={loadMoreButtonRef}
+          onClick={handleFetchMore}
+          disabled={!canFetchMore || isFetchingMore}
+        >
+          fetchmore
+        </button>
       </Container>
     </Page>
   );

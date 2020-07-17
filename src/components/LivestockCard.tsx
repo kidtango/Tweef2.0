@@ -78,6 +78,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
     }
   });
 
+  // Check if user has already liked the item
   useEffect(() => {
     if (livestock && livestock.likes && livestock.likes.length > 0) {
       livestock.likes.map((like) => {
