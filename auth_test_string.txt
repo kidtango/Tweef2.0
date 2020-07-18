@@ -1,7 +1,0 @@
-https://<auth0-domain>.auth0.com/login?client=<client_id>&protocol=oauth2&response_type=token%20id_token&redirect_uri=<callback_uri>&scope=openid%20profile
-
-https://dev-ry212rp7.auth0.com/login?client=254gyEVZx1tBraLZZDJI4YwilQ5x0JI7&protocol=oauth2&response_type=token%20id_token&redirect_uri=http://localhost:3000/callback&scope=openid%20profile
-
-
-
-https://dev-ry212rp7.auth0.com/authorize?client_id=254gyEVZx1tBraLZZDJI4YwilQ5x0JI7&redirect_uri=http%3A%2F%2Flocalhost%3A3000&scope=openid%20profile%20email&response_type=code&response_mode=query&state=LlR3aHpuRExaY1VuazB2cWg3NG5GOEtEUGFIQ3c5R0o4WWhpaTZ2Z251Vg%3D%3D&nonce=anpTd2FJanI4M1ppS1VuTk81QzRwMV9sYWhpaHIyTENULjZkLU1tcDRNQg%3D%3D&code_challenge=lVC3ZhsQRK4DOMY2qDON0VpK8Vy_0p2hTPmCz_-sSdM&code_challenge_method=S256&auth0Client=eyJuYW1lIjoiYXV0aDAtc3BhLWpzIiwidmVyc2lvbiI6IjEuMTAuMCJ9
