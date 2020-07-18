@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import _ from 'lodash';
 
 import {
   Box,
@@ -22,7 +23,6 @@ interface ResultsProps {
 }
 
 const Results: React.FC<ResultsProps> = ({ data, ...rest }) => {
-  console.log('data', data);
   const classes = useStyles();
   const sortRef = useRef(null);
   const [openSort, setOpenSort] = useState(false);
@@ -99,9 +99,7 @@ const Results: React.FC<ResultsProps> = ({ data, ...rest }) => {
           </>
         ))}
       </Grid>
-      {/* <Box mt={6} display="flex" justifyContent="center">
-        <Pagination count={3} />
-      </Box> */}
+
       <Menu
         anchorEl={sortRef.current}
         onClose={handleSortClose}

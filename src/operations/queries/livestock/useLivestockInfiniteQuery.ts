@@ -1,9 +1,24 @@
-import { useInfiniteQuery, QueryOptions } from 'react-query';
-import { client } from 'graphqlClient/publicGQLClient';
+import { useInfiniteQuery, QueryOptions } from "react-query";
+import { client } from "graphqlClient/publicGQLClient";
 
-export const getLiveStockQuery = `
-  query GetLivestock($cursor: timestamptz) {
-    livestock(limit: 6, order_by: {createdAt: desc}, where: {createdAt: {_lt: $cursor}}) {
+interface Cursor {
+  cursor: string;
+}
+
+export const getLiveStockQuery = (queryParams: string) => {
+  // Dynamically construct Hasura GQL query
+  // Provide query state & values
+  // If params are empty, then set them to empty strings
+
+  const coral_type = `coral_type: `;
+  const SPS = "LPS";
+  const soft_coral = "Soft Coral";
+
+  const options = `"${SPS}", "${soft_coral}" , "${""}"`;
+  const query_options = `{_in: [${options}]}`;
+
+  return `{
+    livestock(limit: 6, order_by: {createdAt: desc}, where: {createdAt: {_lt: ${`"`}${queryParams}${`"`}}, ${coral_type}${query_options}}) {
       id
       likes {
         id
@@ -28,35 +43,35 @@ export const getLiveStockQuery = `
       coral_type
       images
       }
-  }
-`;
+  }`;
+};
 
-interface Cursor {
-  cursor: string;
-}
+const getLivestocks = async (key: any, variables?: Cursor) => {
+  let queryParams = variables?.cursor || "2030-07-17T03:58:24.268987+00:00";
 
-const getLivestocks = async (key: any, variales?: Cursor) => {
-  console.log('getLivestocks -> variales', variales);
+  const query = getLiveStockQuery(queryParams);
+  console.log("getLivestocks -> query", query);
 
-  // if (variales) return;
-
-  const data = await client.request(getLiveStockQuery, variales);
-
+  const data = await client.request(query);
   return data;
 };
 
 export default function useLivestockInfiniteQuery(
-  variables: Cursor | boolean = { cursor: '' }
+  variables: Cursor | boolean = { cursor: "" }
 ) {
-  return useInfiniteQuery('livestock', getLivestocks, {
-    getFetchMore: (lastGroup: any, allGroup: any) => {
-      console.log('lastGroup', lastGroup);
+  return useInfiniteQuery("livestock", getLivestocks, {
+    getFetchMore: (lastGroup: any) => {
+      console.log("lastGroup", lastGroup);
+      // Cursor pagination using createdAt as the cursor.
+      // Cursor point is on the last group & last item in group. Each group has 6 items.
+      // You can see that by looking at the GQL query from above. Make sure to make the
+      // cursor point if you change the LIMIT # in the query
       if (lastGroup && lastGroup.livestock && lastGroup.livestock[5]) {
         variables = { cursor: lastGroup.livestock[5].createdAt };
       } else {
+        // return false when end of list. This will stop query from calling getLiveStock
         variables = false;
       }
-      // variables = { cursor: lastGroup.livestock[1].createdAt || false };
 
       return variables;
     }

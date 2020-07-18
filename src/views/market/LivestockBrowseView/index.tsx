@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './Header';
-import { makeStyles, Container, Box } from '@material-ui/core';
+import { makeStyles, Container, Box, Button } from '@material-ui/core';
 import Page from 'components/Page';
 
 import Results from './Results';
@@ -10,16 +10,6 @@ import { Livestock } from 'models/Livestock';
 import useLivestockInfiniteQuery from 'operations/queries/livestock/useLivestockInfiniteQuery';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 
-interface QueryResult {
-  status: string;
-  data: Livestock[];
-  error: any;
-  isFetching: any;
-  isFetchingMore: any;
-  fetchMore: any;
-  canFetchMore: any;
-}
-
 const LivestockBrowseView: React.FC = () => {
   const classes = useStyles();
   const loadMoreButtonRef: any = React.useRef();
@@ -28,7 +18,6 @@ const LivestockBrowseView: React.FC = () => {
     status,
     data,
     error,
-    isFetching,
     isFetchingMore,
     fetchMore,
     canFetchMore
@@ -61,13 +50,16 @@ const LivestockBrowseView: React.FC = () => {
         ) : (
           <Box mt={6}>{<Results data={data} />}</Box>
         )}
-        <button
-          ref={loadMoreButtonRef}
-          onClick={handleFetchMore}
-          disabled={!canFetchMore || isFetchingMore}
-        >
-          fetchmore
-        </button>
+        <Box mt={6} display="flex" justifyContent="center">
+          <Button
+            ref={loadMoreButtonRef}
+            onClick={handleFetchMore}
+            disabled={!canFetchMore || isFetchingMore}
+            variant="text"
+          >
+            {isFetchingMore && 'loading...'}
+          </Button>
+        </Box>
       </Container>
     </Page>
   );
