@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
+import React, { useState } from "react";
+import clsx from "clsx";
 import {
   Box,
   Card,
@@ -9,22 +9,24 @@ import {
   FormControlLabel,
   Input,
   makeStyles
-} from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
-import MultiSelect from './MultiSelect';
+} from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
+import MultiSelect from "./MultiSelect";
+import useLivestockInfiniteQuery from "operations/queries/livestock/useLivestockInfiniteQuery";
+import { useFilterOptionContext } from "context/FilterOptionContext";
 
 const selectOptions = [
   {
-    label: 'WATER',
-    options: ['Saltwater', 'Freshwater']
+    label: "WATER",
+    options: ["Saltwater", "Freshwater"]
   },
   {
-    label: 'CATEGORY',
-    options: ['SPS', 'LPS', 'Soft Corals', 'Plants', 'Fish']
+    label: "CATEGORY",
+    options: ["SPS", "LPS", "Soft Corals", "Fish"]
   },
   {
-    label: 'LOCATION',
-    options: ['30 Miles', '50 Miles', '100 Miles', 'anywhere']
+    label: "LOCATION",
+    options: ["30 Miles", "50 Miles", "100 Miles", "anywhere"]
   }
 ];
 
@@ -35,9 +37,12 @@ interface FilterProps {
 
 const Filter: React.FC<FilterProps> = ({ className, ...rest }) => {
   const classes = useStyles();
-  const [inputValue, setInputValue] = useState('');
-  const [chips, setChips] = useState(['SPS', 'LPS']);
+  const [inputValue, setInputValue] = useState("");
+  const [chips, setChips] = useState(["SPS", "LPS"]);
   const [distanceToggle, setDistanceToggle] = useState(true);
+
+  // Context API
+  const { setFilterObj, setisFiltered } = useFilterOptionContext();
 
   const handleInputChange = (event: any) => {
     event.persist();
@@ -50,7 +55,7 @@ const Filter: React.FC<FilterProps> = ({ className, ...rest }) => {
     if (event.keyCode === 13 && inputValue) {
       if (!chips.includes(inputValue)) {
         setChips((prevChips) => [...prevChips, inputValue]);
-        setInputValue('');
+        setInputValue("");
       }
     }
   };
@@ -65,6 +70,18 @@ const Filter: React.FC<FilterProps> = ({ className, ...rest }) => {
 
   const handleDistanceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDistanceToggle(event.target.checked);
+  };
+
+  const handleSearch = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    const filterObj: { [key: string]: string } = {};
+    chips.forEach((el) => {
+      filterObj[el] = el;
+    });
+    setFilterObj!(filterObj);
+    setisFiltered!(true);
   };
 
   return (
@@ -105,7 +122,7 @@ const Filter: React.FC<FilterProps> = ({ className, ...rest }) => {
         ))}
         <Box flexGrow={1} />
 
-        <Button variant="text" color="primary">
+        <Button variant="text" color="primary" onClick={handleSearch}>
           Search
         </Button>
       </Box>

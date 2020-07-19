@@ -16,35 +16,18 @@ import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { Livestock } from "models/Livestock";
 import LivestockCard from "components/LivestockCard";
-import useLivestockInfiniteQuery from "operations/queries/livestock/useLivestockInfiniteQuery";
-import useIntersectionObserver from "hooks/useIntersectionObserver";
 
 interface ResultsProps {
-  filterObj: any;
+  data: { livestock: Livestock[] }[];
   [x: string]: any;
 }
 
-const Results: React.FC<ResultsProps> = ({ filterObj, ...rest }) => {
+const FilteredResults: React.FC<ResultsProps> = ({ data, ...rest }) => {
   const classes = useStyles();
   const sortRef = useRef(null);
   const [openSort, setOpenSort] = useState(false);
   const [selectedSort, setSelectedSort] = useState("Most popular");
   const [mode, setMode] = useState("grid");
-  const loadMoreButtonRef: any = React.useRef();
-
-  const {
-    status,
-    data,
-    error,
-    isFetchingMore,
-    fetchMore,
-    canFetchMore
-  } = useLivestockInfiniteQuery(filterObj);
-
-  useIntersectionObserver({
-    target: loadMoreButtonRef,
-    onIntersect: fetchMore
-  });
 
   const handleSortOpen = () => {
     setOpenSort(true);
@@ -62,19 +45,6 @@ const Results: React.FC<ResultsProps> = ({ filterObj, ...rest }) => {
   const handleModeChange = (event: any, value: string) => {
     setMode(value);
   };
-
-  const handleFetchMore = () => {
-    fetchMore();
-  };
-
-  if (status === "loading") {
-    return <Box mt={6}>Loading...</Box>;
-  }
-
-  if (error) {
-    console.log(error);
-    return <div>opps... Something went wrong, please refresh browser</div>;
-  }
 
   return (
     <div className={classes.root} {...rest}>
@@ -113,7 +83,7 @@ const Results: React.FC<ResultsProps> = ({ filterObj, ...rest }) => {
       <Grid container spacing={3} className={classes.livestockCards}>
         {data.map((group) => (
           <>
-            {group.livestock.map((item: any) => (
+            {group.livestock.map((item) => (
               <>
                 <Grid
                   item
@@ -144,16 +114,6 @@ const Results: React.FC<ResultsProps> = ({ filterObj, ...rest }) => {
           )
         )}
       </Menu>
-      <Box mt={6} display="flex" justifyContent="center">
-        <Button
-          ref={loadMoreButtonRef}
-          onClick={handleFetchMore}
-          disabled={!canFetchMore || isFetchingMore}
-          variant="text"
-        >
-          {isFetchingMore && "loading..."}
-        </Button>
-      </Box>
     </div>
   );
 };
@@ -182,4 +142,4 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default Results;
+export default FilteredResults;
