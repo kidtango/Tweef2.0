@@ -3,17 +3,16 @@ import Header from "./Header";
 import { makeStyles, Container, Box } from "@material-ui/core";
 import Page from "components/Page";
 
-import Results from "./Results";
+import ResultsViewA from "./ResultsViewA";
+import ResultsViewB from "./ResultsViewB";
 import Filter from "./Filter";
 
 import { useFilterOptionContext } from "context/FilterOptionContext";
-import FilteredResults from "./FilteredResults";
 
 const LivestockBrowse: React.FC = () => {
   const classes = useStyles();
 
   const { filterObj, isFiltered } = useFilterOptionContext();
-  console.log("LivestockBrowse:React.FC -> filterObj", filterObj);
 
   return (
     <Page title="Market" className={classes.root}>
@@ -24,9 +23,9 @@ const LivestockBrowse: React.FC = () => {
         </Box>
         <Box mt={6}>
           {isFiltered ? (
-            <FilteredResults filterObj={filterObj} />
+            <ResultsViewB filterObj={filterObj} />
           ) : (
-            <Results filterObj={filterObj!} />
+            <ResultsViewA filterObj={filterObj} />
           )}
         </Box>
       </Container>

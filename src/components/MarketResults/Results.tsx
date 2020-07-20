@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import {
   Box,
@@ -13,13 +13,13 @@ import {
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import LivestockCard from "components/LivestockCard";
 import useLivestockInfiniteQuery from "operations/queries/livestock/useLivestockInfiniteQuery";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
-import { FilterObj } from "context/FilterOptionContext";
+import LivestockCard from "components/LivestockCard";
+import { calculateItemNum } from "./calculateItemNum";
 
 interface ResultsProps {
-  filterObj: FilterObj;
+  filterObj: any;
   [x: string]: any;
 }
 
@@ -34,6 +34,7 @@ const Results: React.FC<ResultsProps> = ({ filterObj, ...rest }) => {
   const {
     status,
     data,
+
     error,
     isFetchingMore,
     fetchMore,
@@ -85,7 +86,7 @@ const Results: React.FC<ResultsProps> = ({ filterObj, ...rest }) => {
         mb={2}
       >
         <Typography className={classes.title} variant="h5" color="textPrimary">
-          {/* Showing {data && data[0].livestock && data[0].livestock.length} items */}
+          Showing {calculateItemNum(data)} items
         </Typography>
         <Box display="flex" alignItems="center">
           <Button
