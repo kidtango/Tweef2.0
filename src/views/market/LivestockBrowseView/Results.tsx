@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import _ from "lodash";
 
 import {
   Box,
@@ -11,16 +10,16 @@ import {
   Typography,
   makeStyles
 } from "@material-ui/core";
-import { ToggleButtonGroup, ToggleButton, Pagination } from "@material-ui/lab";
+import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import { Livestock } from "models/Livestock";
 import LivestockCard from "components/LivestockCard";
 import useLivestockInfiniteQuery from "operations/queries/livestock/useLivestockInfiniteQuery";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
+import { FilterObj } from "context/FilterOptionContext";
 
 interface ResultsProps {
-  filterObj: any;
+  filterObj: FilterObj;
   [x: string]: any;
 }
 

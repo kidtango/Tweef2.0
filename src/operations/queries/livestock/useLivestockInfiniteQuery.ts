@@ -59,7 +59,7 @@ export default function useLivestockInfiniteQuery(variables?: any) {
   if (variables) {
     SPS = variables.SPS ? variables.SPS : "";
     LPS = variables.LPS ? variables.LPS : "";
-    soft_coral = variables.soft_coral ? variables.soft_coral : "";
+    soft_coral = variables["Soft Coral"] ? variables["Soft Coral"] : "";
   }
 
   const query = getLiveStockQuery();

@@ -1,6 +1,6 @@
 import React, { createContext, useState, ReactNode, useContext } from "react";
 
-interface FilterObj {
+export interface FilterObj {
   [key: string]: string;
 }
 

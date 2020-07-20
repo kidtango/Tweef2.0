@@ -22,7 +22,7 @@ const selectOptions = [
   },
   {
     label: "CATEGORY",
-    options: ["SPS", "LPS", "Soft Corals", "Fish"]
+    options: ["SPS", "LPS", "Soft Coral", "Fish"]
   },
   {
     label: "LOCATION",
@@ -42,7 +42,7 @@ const Filter: React.FC<FilterProps> = ({ className, ...rest }) => {
   const [distanceToggle, setDistanceToggle] = useState(true);
 
   // Context API
-  const { setFilterObj, setisFiltered } = useFilterOptionContext();
+  const { setFilterObj, setisFiltered, isFiltered } = useFilterOptionContext();
 
   const handleInputChange = (event: any) => {
     event.persist();
@@ -81,7 +81,7 @@ const Filter: React.FC<FilterProps> = ({ className, ...rest }) => {
       filterObj[el] = el;
     });
     setFilterObj!(filterObj);
-    setisFiltered!(true);
+    setisFiltered!(!isFiltered);
   };
 
   return (
@@ -123,7 +123,7 @@ const Filter: React.FC<FilterProps> = ({ className, ...rest }) => {
         <Box flexGrow={1} />
 
         <Button variant="text" color="primary" onClick={handleSearch}>
-          Search
+          Filter
         </Button>
       </Box>
     </Card>

@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import _ from "lodash";
 
 import {
   Box,
@@ -11,23 +10,40 @@ import {
   Typography,
   makeStyles
 } from "@material-ui/core";
-import { ToggleButtonGroup, ToggleButton, Pagination } from "@material-ui/lab";
+import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { Livestock } from "models/Livestock";
 import LivestockCard from "components/LivestockCard";
+import useLivestockInfiniteQuery from "operations/queries/livestock/useLivestockInfiniteQuery";
+import useIntersectionObserver from "hooks/useIntersectionObserver";
 
 interface ResultsProps {
-  data: { livestock: Livestock[] }[];
+  filterObj: any;
   [x: string]: any;
 }
 
-const FilteredResults: React.FC<ResultsProps> = ({ data, ...rest }) => {
+const FilteredResults: React.FC<ResultsProps> = ({ filterObj, ...rest }) => {
   const classes = useStyles();
   const sortRef = useRef(null);
   const [openSort, setOpenSort] = useState(false);
   const [selectedSort, setSelectedSort] = useState("Most popular");
   const [mode, setMode] = useState("grid");
+  const loadMoreButtonRef: any = React.useRef();
+
+  const {
+    status,
+    data,
+    error,
+    isFetchingMore,
+    fetchMore,
+    canFetchMore
+  } = useLivestockInfiniteQuery(filterObj);
+
+  useIntersectionObserver({
+    target: loadMoreButtonRef,
+    onIntersect: fetchMore
+  });
 
   const handleSortOpen = () => {
     setOpenSort(true);
@@ -45,6 +61,19 @@ const FilteredResults: React.FC<ResultsProps> = ({ data, ...rest }) => {
   const handleModeChange = (event: any, value: string) => {
     setMode(value);
   };
+
+  const handleFetchMore = () => {
+    fetchMore();
+  };
+
+  if (status === "loading") {
+    return <Box mt={6}>Loading...</Box>;
+  }
+
+  if (error) {
+    console.log(error);
+    return <div>opps... Something went wrong, please refresh browser</div>;
+  }
 
   return (
     <div className={classes.root} {...rest}>
@@ -83,7 +112,7 @@ const FilteredResults: React.FC<ResultsProps> = ({ data, ...rest }) => {
       <Grid container spacing={3} className={classes.livestockCards}>
         {data.map((group) => (
           <>
-            {group.livestock.map((item) => (
+            {group.livestock.map((item: any) => (
               <>
                 <Grid
                   item
@@ -114,6 +143,16 @@ const FilteredResults: React.FC<ResultsProps> = ({ data, ...rest }) => {
           )
         )}
       </Menu>
+      <Box mt={6} display="flex" justifyContent="center">
+        <Button
+          ref={loadMoreButtonRef}
+          onClick={handleFetchMore}
+          disabled={!canFetchMore || isFetchingMore}
+          variant="text"
+        >
+          {isFetchingMore && "loading..."}
+        </Button>
+      </Box>
     </div>
   );
 };
