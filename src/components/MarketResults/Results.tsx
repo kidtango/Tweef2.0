@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 
 import {
   Box,
@@ -34,7 +34,6 @@ const Results: React.FC<ResultsProps> = ({ filterObj, ...rest }) => {
   const {
     status,
     data,
-
     error,
     isFetchingMore,
     fetchMore,

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import clsx from 'clsx';
+import React, { useState, useEffect } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import clsx from "clsx";
 import {
   Avatar,
   Box,
@@ -13,23 +13,24 @@ import {
   Tooltip,
   Typography,
   colors,
-  makeStyles
-} from '@material-ui/core';
-import { Rating } from '@material-ui/lab';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import { useAuth0 } from '@auth0/auth0-react';
+  makeStyles,
+  CardActionArea
+} from "@material-ui/core";
+import { Rating } from "@material-ui/lab";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import { useAuth0 } from "@auth0/auth0-react";
 
-import moment from 'moment';
-import parse from 'html-react-parser';
+import moment from "moment";
+import parse from "html-react-parser";
 
-import { Livestock, CreateLike } from 'models/Livestock';
-import useInsertLike from 'operations/mutations/like/useAddLike';
+import { Livestock, CreateLike } from "models/Livestock";
+import useInsertLike from "operations/mutations/like/useAddLike";
 import useDeleteLike, {
   LikeDelete
-} from 'operations/mutations/like/useDeleteLike';
+} from "operations/mutations/like/useDeleteLike";
 
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
 
 interface LivestockCardProps {
   livestock: Livestock;
@@ -56,8 +57,8 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
     onError: () => {
       setLiked(false);
       setLikes((prevLikes) => prevLikes - 1);
-      enqueueSnackbar('Opps...Something went wrong, please try again later', {
-        variant: 'error'
+      enqueueSnackbar("Opps...Something went wrong, please try again later", {
+        variant: "error"
       });
     }
   });
@@ -72,8 +73,8 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
     onError: () => {
       setLiked(true);
       setLikes((prevLikes) => prevLikes + 1);
-      enqueueSnackbar('Opps...Something went wrong, please try again later', {
-        variant: 'error'
+      enqueueSnackbar("Opps...Something went wrong, please try again later", {
+        variant: "error"
       });
     }
   });
@@ -91,8 +92,8 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
 
   const handleLike = (livestock_id: string) => {
     if (!isAuthenticated)
-      return enqueueSnackbar('Please login first before liking an item', {
-        variant: 'error'
+      return enqueueSnackbar("Please login first before liking an item", {
+        variant: "error"
       });
 
     const newLike: CreateLike = {
@@ -103,8 +104,8 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
 
   const handleUnlike = () => {
     if (!isAuthenticated)
-      return enqueueSnackbar('Please login first before liking an item', {
-        variant: 'error'
+      return enqueueSnackbar("Please login first before liking an item", {
+        variant: "error"
       });
 
     const targetLike: LikeDelete = {
@@ -115,64 +116,77 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <Box p={3}>
-        <CardMedia className={classes.media} image={livestock.images[0]} />
-        <Box display="flex" alignItems="center" mt={2}>
-          <Avatar alt="seller" src={livestock.user && livestock.user.picture} />
-          <Box ml={2}>
-            <Link
-              color="textPrimary"
-              component={RouterLink}
-              to="#"
-              variant="h5"
-            >
-              {livestock.name}
-            </Link>
-            <Typography variant="body2" color="textSecondary">
-              Seller:{' '}
+      <CardActionArea
+        component={RouterLink}
+        to={`/app/market/itemDetail/${livestock.id!}`}
+      >
+        <Box p={3}>
+          <CardMedia className={classes.media} image={livestock.images[0]} />
+          <Box display="flex" alignItems="center" mt={2}>
+            <Avatar
+              alt="seller"
+              src={livestock.user && livestock.user.picture}
+            />
+            <Box ml={2}>
               <Link
                 color="textPrimary"
                 component={RouterLink}
                 to="#"
-                variant="h6"
+                variant="h5"
               >
-                {livestock.user && livestock.user.nick_name}
-              </Link>{' '}
-              | Created {moment(livestock.createdAt).fromNow()}
-            </Typography>
+                {livestock.name}
+              </Link>
+              <Typography variant="body2" color="textSecondary">
+                Seller:{" "}
+                <Link
+                  color="textPrimary"
+                  component={RouterLink}
+                  to="#"
+                  variant="h6"
+                >
+                  {livestock.user && livestock.user.nick_name}
+                </Link>{" "}
+                | Created {moment(livestock.createdAt).fromNow()}
+              </Typography>
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <Box pb={2} px={3}>
-        <Typography color="textSecondary" variant="h3">
-          {livestock.price}
-        </Typography>
-      </Box>
-      <Box pb={2} px={3}>
-        <Typography color="textSecondary" variant="body2">
-          {parse(livestock.description)}
-        </Typography>
-      </Box>
-      <Box py={2} px={3}>
-        <Grid alignItems="center" container justify="space-between" spacing={3}>
-          <Grid item>
-            <Typography variant="h5" color="textPrimary">
-              {livestock.location}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              Location
-            </Typography>
+        <Box pb={2} px={3}>
+          <Typography color="textSecondary" variant="h3">
+            {livestock.price}
+          </Typography>
+        </Box>
+        <Box pb={2} px={3}>
+          <Typography color="textSecondary" variant="body2">
+            {parse(livestock.description)}
+          </Typography>
+        </Box>
+        <Box py={2} px={3}>
+          <Grid
+            alignItems="center"
+            container
+            justify="space-between"
+            spacing={3}
+          >
+            <Grid item>
+              <Typography variant="h5" color="textPrimary">
+                {livestock.location}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Location
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="h5" color="textPrimary">
+                {livestock.coral_type}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Livestock Type
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Typography variant="h5" color="textPrimary">
-              {livestock.coral_type}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              Livestock Type
-            </Typography>
-          </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      </CardActionArea>
       <Divider />
       <Box py={2} pl={2} pr={3} display="flex" alignItems="center">
         {isLiked ? (

@@ -5,10 +5,10 @@ import React, {
   ReactNode,
   ComponentType,
   LazyExoticComponent
-} from 'react';
-import { Switch, Redirect, Route, RouteComponentProps } from 'react-router-dom';
-import DashboardLayout from 'layouts/DashboardLayout';
-import AuthGuard from 'components/AuthGuard';
+} from "react";
+import { Switch, Redirect, Route, RouteComponentProps } from "react-router-dom";
+import DashboardLayout from "layouts/DashboardLayout";
+import AuthGuard from "components/AuthGuard";
 
 interface RouteProps {
   exact?: boolean;
@@ -31,29 +31,34 @@ interface RouteProps {
 const routesConfig: RouteProps[] = [
   {
     exact: true,
-    path: '/login',
-    component: lazy(() => import('views/auth/loginView'))
+    path: "/login",
+    component: lazy(() => import("views/auth/loginView"))
   },
   {
-    path: '/',
+    path: "/",
     layout: DashboardLayout,
     routes: [
       {
         exact: true,
-        path: '/',
+        path: "/",
         component: () => <Redirect to="/app/market" />
       },
 
       {
         exact: true,
-        path: '/app/market',
-        component: lazy(() => import('views/market/LivestockBrowseView'))
+        path: "/app/market",
+        component: lazy(() => import("views/market/LivestockBrowseView"))
+      },
+      {
+        exact: true,
+        path: "/app/market/itemDetail/:livestockId",
+        component: lazy(() => import("views/market/LivestockDetailsView"))
       },
       {
         exact: true,
         guard: AuthGuard,
-        path: '/app/market/listItem',
-        component: lazy(() => import('views/market/LivestockCreateView'))
+        path: "/app/market/listItem",
+        component: lazy(() => import("views/market/LivestockCreateView"))
       }
     ]
   }

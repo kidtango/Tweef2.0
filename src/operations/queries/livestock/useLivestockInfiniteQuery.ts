@@ -42,15 +42,7 @@ export const getLiveStockQuery = () => {
   return query;
 };
 
-// mock filter object
-// const filterObj: { [key: string]: string } = {
-//   SPS: "SPS",
-//   LPS: "LPS",
-//   soft_coral: "Soft Coral"
-// };
-
 export default function useLivestockInfiniteQuery(variables?: any) {
-  console.log("useLivestockInfiniteQuery -> variables", variables);
   //Set initial values in case Variables is undefined
   let SPS: string = "";
   let LPS: string = "";

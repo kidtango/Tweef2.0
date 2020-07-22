@@ -6,20 +6,14 @@ import {
   Button,
   Chip,
   Divider,
-  FormControlLabel,
   Input,
   makeStyles
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import MultiSelect from "./MultiSelect";
-import useLivestockInfiniteQuery from "operations/queries/livestock/useLivestockInfiniteQuery";
 import { useFilterOptionContext } from "context/FilterOptionContext";
 
 const selectOptions = [
-  {
-    label: "WATER",
-    options: ["Saltwater", "Freshwater"]
-  },
   {
     label: "CATEGORY",
     options: ["SPS", "LPS", "Soft Coral", "Fish"]

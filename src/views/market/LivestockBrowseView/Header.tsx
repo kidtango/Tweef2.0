@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from "react";
 import {
   Grid,
   makeStyles,
@@ -7,11 +7,11 @@ import {
   Typography,
   Button,
   SvgIcon
-} from '@material-ui/core';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import clsx from 'clsx';
-import { Link as RouterLink } from 'react-router-dom';
-import { PlusCircle as PlusIcon } from 'react-feather';
+} from "@material-ui/core";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import clsx from "clsx";
+import { Link as RouterLink } from "react-router-dom";
+import { PlusCircle as PlusIcon } from "react-feather";
 
 interface HeaderProps {
   className?: string;
