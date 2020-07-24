@@ -18,7 +18,7 @@ const ActionCard = (props: Props) => {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} elevation={10}>
       <Box>
         <Box display="flex" alignItems="center" justifyContent="center">
           <Box mr={1}>

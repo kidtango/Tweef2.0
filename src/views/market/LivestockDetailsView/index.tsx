@@ -2,27 +2,27 @@ import React, { useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { queryCache } from "react-query";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Livestock } from "models/Livestock";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import GridListTileBar from "@material-ui/core/GridListTileBar";
+
 import {
   makeStyles,
   Container,
   Box,
-  Card,
-  Button,
   Link,
   Paper,
-  Grid,
   Typography,
-  Divider
+  Divider,
+  Card,
+  CardContent
 } from "@material-ui/core";
+import PersonPinCircleIcon from "@material-ui/icons/PersonPinCircle";
 import Page from "components/Page";
 import ActionCard from "./ActionCard";
 import ImageCarousel from "./ImageCarousel";
 import CardMedia from "@material-ui/core/CardMedia";
-import { Divide } from "react-feather";
+import FlowIcon from "./svg/FlowIcon";
+import SunIcon from "./svg/SunIcon";
+import PriceTag from "./PriceTag";
+import RelatedItemsCarousels from "./Carousels/RelatedItemsCarousels";
 
 interface MatchParams {
   livestockId: string;
@@ -76,24 +76,32 @@ const Index: React.FC<MatchProps> = ({ match, location }) => {
                 component="div"
                 className={classes.media}
                 image={
-                  "https://topshelfaquatics.com/wp-content/uploads/2020/07/LPS.H4.070720-1.jpg"
+                  "https://res.cloudinary.com/scotttang/image/upload/v1595003166/tank%20images/z51fhkhurosvwmc57sq8.jpg"
                 }
               />
             </Link>
           </Box>
 
           <Box mr={2} flexWrap="wrap" flex={1}>
-            <Paper className={classes.description} elevation={-1}>
+            <Paper className={classes.description} elevation={0}>
               <Box mb={2}>
                 <Typography variant="h4" color="textPrimary">
                   RR Aussie Gold – WYSIWYG SPS Frag
                 </Typography>
+                <Box>
+                  <Typography variant="body2" color="textSecondary">
+                    <Link href="#">Cedar Park, TX</Link>
+                    <PersonPinCircleIcon
+                      fontSize="small"
+                      color="primary"
+                    />{" "}
+                    Local pickup (22 miles away)
+                  </Typography>
+                </Box>
               </Box>
               <Divider />
-              <Box mb={2} mt={2}>
-                <Typography variant="h4" color="textSecondary">
-                  $99.99
-                </Typography>
+              <Box>
+                <PriceTag price={99.99} />
               </Box>
               <Box>
                 <Typography variant="body2" color="textSecondary">
@@ -106,12 +114,18 @@ const Index: React.FC<MatchProps> = ({ match, location }) => {
                   100% Deep Blue, 50% Blue.
                 </Typography>
               </Box>
-              <Box mt={2}>
+              <Box mt={2} display="flex" alignItems="center">
+                <Box mr={1}>
+                  <FlowIcon />
+                </Box>
                 <Typography variant="body2" color="textSecondary">
                   <strong>Flow:</strong> High
                 </Typography>
               </Box>
-              <Box mt={2}>
+              <Box display="flex" alignItems="center" mt={2}>
+                <Box mr={1}>
+                  <SunIcon />
+                </Box>
                 <Typography variant="body2" color="textSecondary">
                   <strong>Light Intensity:</strong> High
                 </Typography>
@@ -121,11 +135,16 @@ const Index: React.FC<MatchProps> = ({ match, location }) => {
         </Box>
 
         <Box display="flex" flexWrap="wrap" alignContent="right">
-          <Box>Map Section</Box>
           <Box flexGrow={1} />
-          <Box mt={!matches && -2} mr={!matches && 4}>
+          <Box mt={!matches && -16} mr={!matches && 6}>
             <ActionCard />
           </Box>
+        </Box>
+        <Box mt={2}>
+          <RelatedItemsCarousels />
+        </Box>
+        <Box mt={2}>
+          <RelatedItemsCarousels />
         </Box>
         <ImageCarousel
           handleOpen={handleOpen}

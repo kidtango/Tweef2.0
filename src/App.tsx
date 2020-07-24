@@ -1,47 +1,50 @@
-import React from 'react';
-import { create } from 'jss';
-import rtl from 'jss-rtl';
+import React from "react";
+import { create } from "jss";
+import rtl from "jss-rtl";
 import {
   jssPreset,
   makeStyles,
   createStyles,
   ThemeProvider,
   StylesProvider
-} from '@material-ui/core';
-import { useSettingsContext } from 'context/SettingsContext';
-import { createTheme } from 'theme';
-import { Router } from 'react-router-dom';
-import { SnackbarProvider } from 'notistack';
-import Routes from 'Routes';
-import history from 'utils/history';
-import { useAuth0 } from '@auth0/auth0-react';
+} from "@material-ui/core";
+import { useSettingsContext } from "context/SettingsContext";
+import { createTheme } from "theme";
+import { Router } from "react-router-dom";
+import { SnackbarProvider } from "notistack";
+import Routes from "Routes";
+import history from "utils/history";
+import { useAuth0 } from "@auth0/auth0-react";
 
-import { ReactQueryDevtools } from 'react-query-devtools';
+import { ReactQueryDevtools } from "react-query-devtools";
+
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
 const useStyles = makeStyles(() =>
   createStyles({
-    '@global': {
-      '*': {
-        boxSizing: 'border-box',
+    "@global": {
+      "*": {
+        boxSizing: "border-box",
         margin: 0,
         padding: 0
       }
     },
     html: {
-      '-webkit-font-smoothing': 'antialiased',
-      '-moz-osx-font-smoothing': 'grayscale',
-      height: '100%',
-      width: '100%'
+      "-webkit-font-smoothing": "antialiased",
+      "-moz-osx-font-smoothing": "grayscale",
+      height: "100%",
+      width: "100%"
     },
     body: {
-      height: '100%',
-      width: '100%'
+      height: "100%",
+      width: "100%"
     },
-    '#root': {
-      height: '100%',
-      width: '100%'
+    "#root": {
+      height: "100%",
+      width: "100%"
     }
   })
 );

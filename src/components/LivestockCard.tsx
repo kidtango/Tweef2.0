@@ -226,7 +226,8 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   media: {
     minHeight: 400,
-    backgroundColor: theme.palette.background.dark
+    backgroundColor: theme.palette.background.dark,
+    borderRadius: 5
   },
   likedButton: {
     color: colors.red[600]
