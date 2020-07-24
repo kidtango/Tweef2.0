@@ -72,7 +72,7 @@ export default ActionCard;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: theme.spacing(2),
+    padding: 1,
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",

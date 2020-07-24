@@ -23,6 +23,7 @@ import FlowIcon from "./svg/FlowIcon";
 import SunIcon from "./svg/SunIcon";
 import PriceTag from "./PriceTag";
 import RelatedItemsCarousels from "./Carousels/RelatedItemsCarousels";
+import TestimonialSlider from "./Carousels/TestimonialSlider.tsx";
 
 interface MatchParams {
   livestockId: string;
@@ -133,7 +134,7 @@ const Index: React.FC<MatchProps> = ({ match, location }) => {
             </Paper>
           </Box>
         </Box>
-
+        {/* Related items and more items sold by sellers */}
         <Box display="flex" flexWrap="wrap" alignContent="right">
           <Box flexGrow={1} />
           <Box mt={!matches && -16} mr={!matches && 6}>
@@ -146,6 +147,7 @@ const Index: React.FC<MatchProps> = ({ match, location }) => {
         <Box mt={2}>
           <RelatedItemsCarousels />
         </Box>
+
         <ImageCarousel
           handleOpen={handleOpen}
           setHandleOpen={setHandleOpen}

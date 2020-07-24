@@ -31,6 +31,7 @@ import useDeleteLike, {
 } from "operations/mutations/like/useDeleteLike";
 
 import { useSnackbar } from "notistack";
+import { Transform } from "stream";
 
 interface LivestockCardProps {
   livestock: Livestock;
@@ -115,14 +116,14 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
   };
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
+    <Card className={clsx(classes.root, className)} {...rest} elevation={0}>
       <CardActionArea
         component={RouterLink}
         to={`/app/market/itemDetail/${livestock.id!}`}
       >
-        <Box p={3}>
+        <Box>
           <CardMedia className={classes.media} image={livestock.images[0]} />
-          <Box display="flex" alignItems="center" mt={2}>
+          <Box display="flex" alignItems="center" mt={2} p={2}>
             <Avatar
               alt="seller"
               src={livestock.user && livestock.user.picture}
@@ -223,11 +224,15 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
 export default LivestockCard;
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    transition: "all .2s ease-in-out",
+    "&:hover": {
+      boxShadow: theme.shadows[8],
+      transform: "translateY(-15px)"
+    }
+  },
   media: {
-    minHeight: 400,
-    backgroundColor: theme.palette.background.dark,
-    borderRadius: 5
+    minHeight: 400
   },
   likedButton: {
     color: colors.red[600]
