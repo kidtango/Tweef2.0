@@ -18,7 +18,7 @@ export interface CreateLike {
 export interface Livestock {
   id?: string;
   name: string;
-  price: Number;
+  price: number;
   water: "Saltwater" | "Freshwater";
   class: "Invertegrate" | "Fish" | "Coral" | "Plant";
   coral_type: "SPS" | "LPS" | "Soft Coral" | "NA";

@@ -31,7 +31,8 @@ import useDeleteLike, {
 } from "operations/mutations/like/useDeleteLike";
 
 import { useSnackbar } from "notistack";
-import { Transform } from "stream";
+import Ribbon from "components/Ribbon";
+import PriceTag from "views/market/LivestockDetailsView/PriceTag";
 
 interface LivestockCardProps {
   livestock: Livestock;
@@ -116,108 +117,115 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
   };
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest} elevation={0}>
-      <CardActionArea
-        component={RouterLink}
-        to={`/app/market/itemDetail/${livestock.id!}`}
-      >
-        <Box>
-          <CardMedia className={classes.media} image={livestock.images[0]} />
-          <Box display="flex" alignItems="center" mt={2} p={2}>
-            <Avatar
-              alt="seller"
-              src={livestock.user && livestock.user.picture}
-            />
-            <Box ml={2}>
-              <Link
-                color="textPrimary"
-                component={RouterLink}
-                to="#"
-                variant="h5"
-              >
-                {livestock.name}
-              </Link>
-              <Typography variant="body2" color="textSecondary">
-                Seller:{" "}
+    <>
+      <Card className={clsx(classes.root, className)} {...rest} elevation={0}>
+        <CardActionArea
+          component={RouterLink}
+          to={`/app/market/itemDetail/${livestock.id!}`}
+        >
+          <Ribbon status={"sold"} />
+          <Box>
+            <CardMedia className={classes.media} image={livestock.images[0]} />
+            <Box display="flex" alignItems="center" mt={2} p={2}>
+              <Avatar
+                alt="seller"
+                src={livestock.user && livestock.user.picture}
+              />
+              <Box ml={2}>
                 <Link
                   color="textPrimary"
                   component={RouterLink}
                   to="#"
-                  variant="h6"
+                  variant="h5"
                 >
-                  {livestock.user && livestock.user.nick_name}
-                </Link>{" "}
-                | Created {moment(livestock.createdAt).fromNow()}
-              </Typography>
+                  {livestock.name}
+                </Link>
+                <Typography variant="body2" color="textSecondary">
+                  Seller:{" "}
+                  <Link
+                    color="textPrimary"
+                    component={RouterLink}
+                    to="#"
+                    variant="h6"
+                  >
+                    {livestock.user && livestock.user.nick_name}
+                  </Link>{" "}
+                  | Created {moment(livestock.createdAt).fromNow()}
+                </Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
-        <Box pb={2} px={3}>
-          <Typography color="textSecondary" variant="h3">
-            {livestock.price}
-          </Typography>
-        </Box>
-        <Box pb={2} px={3}>
-          <Typography color="textSecondary" variant="body2">
-            {parse(livestock.description)}
-          </Typography>
-        </Box>
-        <Box py={2} px={3}>
-          <Grid
-            alignItems="center"
-            container
-            justify="space-between"
-            spacing={3}
-          >
-            <Grid item>
-              <Typography variant="h5" color="textPrimary">
-                {livestock.location}
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                Location
-              </Typography>
+          <Box pb={2} px={3}>
+            <PriceTag price={livestock.price} />
+            {/* <Typography color="textSecondary" variant="h3">
+              {livestock.price}
+            </Typography> */}
+          </Box>
+          <Box pb={2} px={3}>
+            <Typography color="textSecondary" variant="body2">
+              {parse(livestock.description)}
+            </Typography>
+          </Box>
+          <Box py={2} px={3}>
+            <Grid
+              alignItems="center"
+              container
+              justify="space-between"
+              spacing={3}
+            >
+              <Grid item>
+                <Typography variant="h5" color="textPrimary">
+                  {livestock.location}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Location
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="h5" color="textPrimary">
+                  {livestock.coral_type}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Livestock Type
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Typography variant="h5" color="textPrimary">
-                {livestock.coral_type}
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                Livestock Type
-              </Typography>
-            </Grid>
-          </Grid>
-        </Box>
-      </CardActionArea>
-      <Divider />
-      <Box py={2} pl={2} pr={3} display="flex" alignItems="center">
-        {isLiked ? (
-          <Tooltip title="Unlike">
-            <IconButton className={classes.likedButton} onClick={handleUnlike}>
-              <FavoriteIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Like">
-            <IconButton onClick={() => handleLike(livestock.id!)}>
-              <FavoriteBorderIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        )}
-        <Typography variant="subtitle2" color="textSecondary">
-          {likes}
-        </Typography>
+          </Box>
+        </CardActionArea>
+        <Divider />
+        <Box py={2} pl={2} pr={3} display="flex" alignItems="center">
+          {isLiked ? (
+            <Tooltip title="Unlike">
+              <IconButton
+                className={classes.likedButton}
+                onClick={handleUnlike}
+              >
+                <FavoriteIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <Tooltip title="Like">
+              <IconButton onClick={() => handleLike(livestock.id!)}>
+                <FavoriteBorderIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
+          <Typography variant="subtitle2" color="textSecondary">
+            {likes}
+          </Typography>
 
-        <Box flexGrow={1} />
-        <Typography variant="subtitle2" color="textSecondary">
-          Seller Rating:
-        </Typography>
-        <Rating
-          value={livestock.user && livestock.user.rating}
-          size="small"
-          readOnly
-        />
-      </Box>
-    </Card>
+          <Box flexGrow={1} />
+          <Typography variant="subtitle2" color="textSecondary">
+            Seller Rating:
+          </Typography>
+          <Rating
+            value={livestock.user && livestock.user.rating}
+            size="small"
+            readOnly
+          />
+        </Box>
+      </Card>
+    </>
   );
 };
 
@@ -225,6 +233,7 @@ export default LivestockCard;
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    position: "relative",
     transition: "all .2s ease-in-out",
     "&:hover": {
       boxShadow: theme.shadows[8],

@@ -10,9 +10,7 @@ import {
   Link,
   Paper,
   Typography,
-  Divider,
-  Card,
-  CardContent
+  Divider
 } from "@material-ui/core";
 import PersonPinCircleIcon from "@material-ui/icons/PersonPinCircle";
 import Page from "components/Page";
@@ -22,8 +20,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import FlowIcon from "./svg/FlowIcon";
 import SunIcon from "./svg/SunIcon";
 import PriceTag from "./PriceTag";
-import RelatedItemsCarousels from "./Carousels/RelatedItemsCarousels";
-import TestimonialSlider from "./Carousels/TestimonialSlider.tsx";
+import RelatedItemsCarousels from "./Carousels/RelatedItemsCarousels/RelatedItemsCarousels";
 
 interface MatchParams {
   livestockId: string;
@@ -101,7 +98,7 @@ const Index: React.FC<MatchProps> = ({ match, location }) => {
                 </Box>
               </Box>
               <Divider />
-              <Box>
+              <Box p={1}>
                 <PriceTag price={99.99} />
               </Box>
               <Box>

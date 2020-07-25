@@ -1,11 +1,11 @@
 import React from "react";
 import { CardContent, Card, makeStyles, Box } from "@material-ui/core";
 import Slider from "react-slick";
-import "./dist/reactSlick.css";
+import "./reactSlick.css";
 
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import MiniLivestockCards from "./MiniLivestockCards";
+import MiniLivestockCards from "../MiniLivestockCards";
 
 interface Props {}
 
