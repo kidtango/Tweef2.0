@@ -104,21 +104,25 @@ const Filter: React.FC<FilterProps> = ({ className, ...rest }) => {
         ))}
       </Box>
       <Divider />
-      <Box display="flex" alignItems="center" flexWrap="wrap" p={1}>
-        {selectOptions.map((option) => (
-          <MultiSelect
-            key={option.label}
-            label={option.label}
-            onChange={handleMultiSelectChange}
-            options={option.options}
-            value={chips}
-          />
-        ))}
-        <Box flexGrow={1} />
 
-        <Button variant="text" color="primary" onClick={handleSearch}>
-          Filter
-        </Button>
+      <Box display="flex" alignItems="center" flexWrap="wrap" p={1}>
+        <Box>
+          {selectOptions.map((option) => (
+            <MultiSelect
+              key={option.label}
+              label={option.label}
+              onChange={handleMultiSelectChange}
+              options={option.options}
+              value={chips}
+            />
+          ))}
+        </Box>
+
+        <Box ml={4}>
+          <Button variant="outlined" color="primary" onClick={handleSearch}>
+            Filter
+          </Button>
+        </Box>
       </Box>
     </Card>
   );

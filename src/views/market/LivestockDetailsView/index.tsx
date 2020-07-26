@@ -15,12 +15,13 @@ import {
 import PersonPinCircleIcon from "@material-ui/icons/PersonPinCircle";
 import Page from "components/Page";
 import ActionCard from "./ActionCard";
-import ImageCarousel from "./ImageCarousel";
 import CardMedia from "@material-ui/core/CardMedia";
 import FlowIcon from "./svg/FlowIcon";
 import SunIcon from "./svg/SunIcon";
 import PriceTag from "./PriceTag";
 import RelatedItemsCarousels from "./Carousels/RelatedItemsCarousels/RelatedItemsCarousels";
+import LivestockGallery from "./Carousels/LivestockGallery";
+import Header from "./Header";
 
 interface MatchParams {
   livestockId: string;
@@ -65,22 +66,16 @@ const Index: React.FC<MatchProps> = ({ match, location }) => {
   return (
     <Page title="Livestock Detail" className={classes.root}>
       <Container maxWidth="lg">
-        {/* <div>Header Section</div> */}
+        <Box mb={4}>
+          <Header />
+        </Box>
 
         <Box display="flex" alignItems="left" flexWrap="wrap">
-          <Box mr={2}>
-            <Link onClick={handleClick} href="#">
-              <CardMedia
-                component="div"
-                className={classes.media}
-                image={
-                  "https://res.cloudinary.com/scotttang/image/upload/v1595003166/tank%20images/z51fhkhurosvwmc57sq8.jpg"
-                }
-              />
-            </Link>
+          <Box mr={2} className={classes.gallery} mb={2}>
+            <LivestockGallery />
           </Box>
 
-          <Box mr={2} flexWrap="wrap" flex={1}>
+          <Box flexWrap="wrap" flex={1}>
             <Paper className={classes.description} elevation={0}>
               <Box mb={2}>
                 <Typography variant="h4" color="textPrimary">
@@ -138,18 +133,12 @@ const Index: React.FC<MatchProps> = ({ match, location }) => {
             <ActionCard />
           </Box>
         </Box>
-        <Box mt={2}>
+        <Box mt={1}>
           <RelatedItemsCarousels />
         </Box>
         <Box mt={2}>
           <RelatedItemsCarousels />
         </Box>
-
-        <ImageCarousel
-          handleOpen={handleOpen}
-          setHandleOpen={setHandleOpen}
-          isMobile={matches}
-        />
       </Container>
     </Page>
   );
@@ -165,27 +154,18 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3)
   },
   media: {
-    minHeight: 350,
-    minWidth: 300,
+    minHeight: 500,
+    minWidth: 400,
     backgroundColor: theme.palette.background.dark,
-    borderRadius: 4
-  },
-  imageContainer: {},
-  gridList: {
-    flexWrap: "nowrap",
-    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-    transform: "translateZ(0)"
-  },
-  title: {
-    color: theme.palette.primary.light
-  },
-  titleBar: {
-    background:
-      "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)"
+    borderRadius: 4,
+    marginBottom: 4
   },
   description: {
     padding: theme.spacing(2),
-    minHeight: 350,
-    minWidth: 300
+    minHeight: 500,
+    minWidth: 350
+  },
+  gallery: {
+    maxWidth: 400
   }
 }));
