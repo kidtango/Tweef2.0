@@ -6,9 +6,11 @@ import {
   makeStyles,
   createStyles,
   ThemeProvider,
-  StylesProvider
+  StylesProvider,
+  Box,
+  useMediaQuery
 } from "@material-ui/core";
-import { useSettingsContext } from "context/SettingsContext";
+import { useSettingsContext } from "contexts/SettingsContext";
 import { createTheme } from "theme";
 import { Router } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
@@ -17,9 +19,7 @@ import history from "utils/history";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { ReactQueryDevtools } from "react-query-devtools";
-
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
+import Loader from "components/loader";
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
@@ -56,13 +56,18 @@ const App: React.FC = () => {
   const { isLoading, error } = useAuth0();
 
   const { settings } = useSettingsContext();
+  const screenSizeMatches = useMediaQuery("(max-width:600px)");
 
   if (error) {
     return <div>Oops... {error.message}</div>;
   }
 
   if (isLoading) {
-    return <div>loading...</div>;
+    return (
+      <Box display="flex" flexDirection="column" height="100vh">
+        {screenSizeMatches ? <Loader size={20} /> : <Loader size={90} />}
+      </Box>
+    );
   }
 
   return (

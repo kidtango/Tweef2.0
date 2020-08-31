@@ -11,7 +11,7 @@ import {
   makeStyles
 } from "@material-ui/core";
 import Results from "components/MarketResults/Results";
-import { FilterObj } from "context/FilterOptionContext";
+import { FilterObj } from "contexts/FilterOptionContext";
 
 interface ResultsProps {
   filterObj?: FilterObj;

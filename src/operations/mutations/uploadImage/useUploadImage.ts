@@ -1,19 +1,17 @@
-import { useMutation, MutationOptions } from 'react-query';
-import axios from 'axios';
+import { useMutation } from "react-query";
+import axios from "axios";
 
 const uploadImages = async (formData: FormData) => {
   const data: UploaImages = await axios.post(
     process.env.REACT_APP_CLOUDINARY_URL!,
     formData,
-    { headers: { 'X-Requested-With': 'XMLHttpRequest' } }
+    { headers: { "X-Requested-With": "XMLHttpRequest" } }
   );
 
   return data.data;
 };
 
-export default function useUploadImages(
-  variables: MutationOptions<any, FormData> = {}
-) {
+export default function useUploadImages(variables = {}) {
   return useMutation(uploadImages, variables);
 }
 
@@ -45,7 +43,7 @@ export interface Request {}
 
 export interface ConfigHeaders {
   Accept: string;
-  'X-Requested-With': string;
+  "X-Requested-With": string;
 }
 
 export interface Data {
@@ -71,6 +69,6 @@ export interface Data {
 }
 
 export interface UploaImagesHeaders {
-  'cache-control': string;
-  'content-type': string;
+  "cache-control": string;
+  "content-type": string;
 }

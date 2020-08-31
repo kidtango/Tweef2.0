@@ -51,7 +51,10 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
   const { user, isAuthenticated } = useAuth0();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [inserLike] = useInsertLike({
+  const createdDate = moment(livestock.created_at);
+  const currentDate = moment.now();
+
+  const [insertLike] = useInsertLike({
     onMutate: () => {
       setLiked(true);
       setLikes((prevLikes) => prevLikes + 1);
@@ -101,7 +104,7 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
     const newLike: CreateLike = {
       livestock_id
     };
-    inserLike(newLike);
+    insertLike(newLike);
   };
 
   const handleUnlike = () => {
@@ -123,7 +126,9 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
           component={RouterLink}
           to={`/app/market/itemDetail/${livestock.id!}`}
         >
-          <Ribbon status={"sold"} />
+          {Math.abs(createdDate.diff(currentDate, "days")) < 2 && (
+            <Ribbon status={"new"} />
+          )}
           <Box>
             <CardMedia className={classes.media} image={livestock.images[0]} />
             <Box display="flex" alignItems="center" mt={2} p={2}>
@@ -150,16 +155,13 @@ const LivestockCard: React.FC<LivestockCardProps> = ({
                   >
                     {livestock.user && livestock.user.nick_name}
                   </Link>{" "}
-                  | Created {moment(livestock.createdAt).fromNow()}
+                  | Created {moment(livestock.created_at).fromNow()}
                 </Typography>
               </Box>
             </Box>
           </Box>
           <Box pb={2} px={3}>
             <PriceTag price={livestock.price} />
-            {/* <Typography color="textSecondary" variant="h3">
-              {livestock.price}
-            </Typography> */}
           </Box>
           <Box pb={2} px={3}>
             <Typography color="textSecondary" variant="body2">

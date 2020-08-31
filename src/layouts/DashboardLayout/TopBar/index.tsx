@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import clsx from 'clsx';
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
+import clsx from "clsx";
 import {
   AppBar,
   Box,
@@ -9,18 +9,18 @@ import {
   Toolbar,
   makeStyles,
   SvgIcon
-} from '@material-ui/core';
-import { Menu as MenuIcon } from 'react-feather';
-import { THEMES } from 'constants/themeConstants';
-import { ITheme } from 'theme';
-import Logo from 'assets/icons/Logo';
-import Account from './components/Account';
-import Settings from './components/Settings';
-import Contacts from './components/Contacts';
-import Notifications from './components/Notifications';
-import Search from '../NavBar/components/Search';
+} from "@material-ui/core";
+import { Menu as MenuIcon } from "react-feather";
+import { THEMES } from "constants/themeConstants";
+import { ITheme } from "theme";
+import Logo from "assets/icons/Logo";
+import Account from "./components/Account";
+import Settings from "./components/Settings";
+import Contacts from "./components/Contacts";
+import Notifications from "./components/Notifications";
+import Search from "../NavBar/components/Search";
 
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface TopBarProps {
   className?: string;
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme: ITheme) => ({
   root: {
     zIndex: theme.zIndex.drawer + 100,
     ...(theme.name === THEMES.LIGHT
-      ? { boxShadow: 'none', backgroundColor: theme.palette.primary.main }
+      ? { boxShadow: "none", backgroundColor: theme.palette.primary.main }
       : {}),
     ...(theme.name === THEMES.ONE_DARK
       ? { backgroundColor: theme.palette.background.default }

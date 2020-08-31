@@ -15,21 +15,33 @@ export interface CreateLike {
   livestock_id: string;
 }
 
+interface Location {
+  type: string;
+  coordinates: number[];
+  crs?: {
+    type: string;
+    properties: {
+      name: string;
+    };
+  };
+}
+
 export interface Livestock {
   id?: string;
   name: string;
   price: number;
-  water: "Saltwater" | "Freshwater";
-  class: "Invertegrate" | "Fish" | "Coral" | "Plant";
+  class: "Invertegrate" | "Fish" | "Coral";
   coral_type: "SPS" | "LPS" | "Soft Coral" | "NA";
   description: string;
-  location: number;
+  zipcode?: number;
   user?: User;
   likes?: Like[];
   images: string[];
-  createdAt?: Date;
-  updatedAt?: Date;
-  sellerId?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  seller_id?: string;
+  location?: Location;
+  is_public: boolean;
 }
 
 export type Livestocks = Livestock[];

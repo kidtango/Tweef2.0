@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import MultiSelect from "./MultiSelect";
-import { useFilterOptionContext } from "context/FilterOptionContext";
+import { useFilterOptionContext } from "contexts/FilterOptionContext";
 
 const selectOptions = [
   {

@@ -1,9 +1,10 @@
-import { useMutation, MutationOptions } from 'react-query';
-import { client } from 'graphqlClient/authenticatedGQLClient';
+import { useMutation } from "react-query";
+import { client } from "graphqlClient/authenticatedGQLClient";
+import { gql } from "graphql-request";
 
-const deleteLikesOne = `
+const deleteLikesOne = gql`
   mutation DeleteLikesOne($user_id: String!) {
-    delete_likes(where: {user_id: {_eq: $user_id}}) {
+    delete_likes(where: { user_id: { _eq: $user_id } }) {
       affected_rows
     }
   }
@@ -19,8 +20,6 @@ const deleteLikes = async (variables: LikeDelete) => {
   return data;
 };
 
-export default function useDeleteLike(
-  variables: MutationOptions<any, LikeDelete> = {}
-) {
+export default function useDeleteLike(variables: any = {}) {
   return useMutation(deleteLikes, variables);
 }

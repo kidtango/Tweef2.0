@@ -7,7 +7,7 @@ import ResultsViewA from "./ResultsViewA";
 import ResultsViewB from "./ResultsViewB";
 import Filter from "./Filter";
 
-import { useFilterOptionContext } from "context/FilterOptionContext";
+import { useFilterOptionContext } from "contexts/FilterOptionContext";
 
 const LivestockBrowse: React.FC = () => {
   const classes = useStyles();

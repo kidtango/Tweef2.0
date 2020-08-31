@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   Button,
@@ -12,39 +12,38 @@ import {
   TextField,
   Typography,
   makeStyles
-} from '@material-ui/core';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { useSnackbar } from 'notistack';
-import { useHistory } from 'react-router-dom';
-import clsx from 'clsx';
-import QuillEditor from 'components/QuillEditor';
-import FilesDropZone from 'components/FilesDropZone';
-import { useAuth0 } from '@auth0/auth0-react';
+} from "@material-ui/core";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { useSnackbar } from "notistack";
+import { useHistory } from "react-router-dom";
+import clsx from "clsx";
+import QuillEditor from "components/QuillEditor";
+import FilesDropZone from "components/FilesDropZone";
+import { useAuth0 } from "@auth0/auth0-react";
 
-import useAddLivestock from 'operations/mutations/livestock/useAddLivestock';
-import { Livestock } from 'models/Livestock';
+import useAddLivestock from "operations/mutations/livestock/useAddLivestock";
+import { Livestock } from "models/Livestock";
 
 const waterTypes = [
-  { id: '', name: '' },
-  { id: 'salt', name: 'Saltwater' },
-  { id: 'fresh', name: 'Freshwater' }
+  { id: "", name: "" },
+  { id: "salt", name: "Saltwater" },
+  { id: "fresh", name: "Freshwater" }
 ];
 
 const classifications = [
-  { id: '', name: '' },
-  { id: 'invert', name: 'Interegrate' },
-  { id: 'coral', name: 'Coral' },
-  { id: 'fish', name: 'Fish' },
-  { id: 'plant', name: 'Plant' }
+  { id: "", name: "" },
+  { id: "invert", name: "Interegrate" },
+  { id: "coral", name: "Coral" },
+  { id: "fish", name: "Fish" }
 ];
 
 const coralTypes = [
-  { id: '', name: '' },
-  { id: 'SPS', name: 'SPS' },
-  { id: 'LPS', name: 'LPS' },
-  { id: 'Soft Coral', name: 'Soft Coral' },
-  { id: 'NA', name: 'NA' }
+  { id: "", name: "" },
+  { id: "SPS", name: "SPS" },
+  { id: "LPS", name: "LPS" },
+  { id: "Soft Coral", name: "Soft Coral" },
+  { id: "NA", name: "NA" }
 ];
 
 interface ProductCreateFormProps {
@@ -61,7 +60,7 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
   const history = useHistory();
 
   const [addLivestockMutation, { error }] = useAddLivestock();
-  console.log('error', error);
+  console.log("error", error);
 
   const { user, isAuthenticated } = useAuth0();
 
@@ -72,18 +71,17 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
   return (
     <Formik
       initialValues={{
-        waterType: '',
-        description: '',
+        description: "",
         images: [],
         includesTaxes: false,
         isTaxable: false,
-        name: '',
-        location: '',
-        salePrice: '',
+        name: "",
+        location: "",
+        salePrice: "",
         price: 0.0,
-        submit: '',
-        classification: '',
-        coralType: ''
+        submit: "",
+        classification: "",
+        coralType: ""
       }}
       validationSchema={Yup.object().shape({
         category: Yup.string().max(255),
@@ -95,7 +93,6 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
         productSku: Yup.string().max(255),
         salePrice: Yup.number().min(0),
         classification: Yup.string().required(),
-        waterType: Yup.string().required(),
         coralType: Yup.string().required()
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -104,17 +101,12 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
           const newLivestock: Livestock = {
             name: values.name,
             price: values.price,
-            water: values.waterType as 'Saltwater' | 'Freshwater',
-            class: values.classification as
-              | 'Coral'
-              | 'Fish'
-              | 'Plant'
-              | 'Invertegrate',
-            coral_type: values.coralType as 'SPS' | 'LPS' | 'Soft Coral' | 'NA',
+            class: values.classification as "Coral" | "Fish" | "Invertegrate",
+            coral_type: values.coralType as "SPS" | "LPS" | "Soft Coral" | "NA",
             description: values.description,
-            location: parseInt(values.location),
             // sellerId: user.sub,
-            images: values.images
+            images: values.images,
+            is_public: true
           };
 
           // Api call using custom hook
@@ -122,9 +114,9 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
 
           setStatus({ success: true });
           setSubmitting(false);
-          enqueueSnackbar('Livestock Created', { variant: 'success' });
+          enqueueSnackbar("Livestock Created", { variant: "success" });
 
-          history.push('/app/market');
+          history.push("/app/market");
         } catch (err) {
           setErrors({ submit: err.message });
           setStatus({ success: false });
@@ -172,7 +164,7 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
                         className={classes.editor}
                         value={values.description}
                         onChange={(value: string) => {
-                          setFieldValue('description', value);
+                          setFieldValue("description", value);
                         }}
                       />
                     </Paper>
@@ -218,7 +210,7 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
                           helperText={
                             touched.price && errors.price
                               ? errors.price
-                              : 'If you have a sale price this will be shown as old price'
+                              : "If you have a sale price this will be shown as old price"
                           }
                           label="Price"
                           name="price"
@@ -253,24 +245,6 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
                 <CardHeader title="Livestock details" />
                 <Divider />
                 <CardContent>
-                  <TextField
-                    fullWidth
-                    error={Boolean(touched.waterType && errors.waterType)}
-                    helperText={touched.waterType && errors.waterType}
-                    label="waterType"
-                    name="waterType"
-                    onChange={handleChange}
-                    select
-                    SelectProps={{ native: true }}
-                    value={values.waterType}
-                    variant="outlined"
-                  >
-                    {waterTypes.map((water) => (
-                      <option key={water.id} value={water.id}>
-                        {water.name}
-                      </option>
-                    ))}
-                  </TextField>
                   <Box mt={2}>
                     <TextField
                       fullWidth
@@ -303,7 +277,7 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
                       fullWidth
                       error={Boolean(touched.coralType && errors.coralType)}
                       helperText={touched.coralType && errors.coralType}
-                      label="coralType"
+                      label="coral type"
                       name="coralType"
                       onChange={handleChange}
                       select
@@ -362,9 +336,9 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
 };
 
 const useStyles = makeStyles(() => ({
-  root: { minHeight: '100vh' },
+  root: { minHeight: "100vh" },
   editor: {
-    '& .ql-editor': {
+    "& .ql-editor": {
       height: 400
     }
   }

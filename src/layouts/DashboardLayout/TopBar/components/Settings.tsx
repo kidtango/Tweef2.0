@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from "react";
 import {
   Badge,
   Box,
@@ -12,12 +12,12 @@ import {
   Tooltip,
   Typography,
   makeStyles
-} from '@material-ui/core';
-import { capitalCase } from 'change-case';
-import { Settings as SettingsIcon } from 'react-feather';
-import { ITheme } from 'theme';
-import { useSettingsContext } from 'context/SettingsContext';
-import { THEMES } from 'constants/themeConstants';
+} from "@material-ui/core";
+import { capitalCase } from "change-case";
+import { Settings as SettingsIcon } from "react-feather";
+import { ITheme } from "theme";
+import { useSettingsContext } from "contexts/SettingsContext";
+import { THEMES } from "constants/themeConstants";
 
 const Settings: React.FC = () => {
   const classes = useStyles();
@@ -64,7 +64,7 @@ const Settings: React.FC = () => {
       </Tooltip>
       <Popover
         classes={{ paper: classes.popover }}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={isOpen}
         anchorEl={ref.current}
         onClose={handleClose}
@@ -76,13 +76,13 @@ const Settings: React.FC = () => {
           <FormControlLabel
             control={
               <Switch
-                checked={values.direction === 'rtl'}
+                checked={values.direction === "rtl"}
                 edge="start"
                 name="direction"
                 onChange={(event) =>
                   handleChange(
-                    'direction',
-                    event.target.checked ? 'rtl' : 'ltr'
+                    "direction",
+                    event.target.checked ? "rtl" : "ltr"
                   )
                 }
               />
@@ -98,7 +98,7 @@ const Settings: React.FC = () => {
                 edge="start"
                 name="direction"
                 onChange={(event) =>
-                  handleChange('responsiveFontSizes', event.target.checked)
+                  handleChange("responsiveFontSizes", event.target.checked)
                 }
               />
             }
@@ -110,7 +110,7 @@ const Settings: React.FC = () => {
             fullWidth
             label="Theme"
             name="theme"
-            onChange={(event) => handleChange('theme', event.target.value)}
+            onChange={(event) => handleChange("theme", event.target.value)}
             select
             SelectProps={{ native: true }}
             value={values.theme}

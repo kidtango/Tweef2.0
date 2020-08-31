@@ -1,12 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import 'react-quill/dist/quill.snow.css';
-import SettingsContextProvider from 'context/SettingsContext';
-import { restoreSettings } from 'utils/settings';
-import { Auth0Provider } from '@auth0/auth0-react';
-import history from 'utils/history';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
+import "react-quill/dist/quill.snow.css";
+import SettingsContextProvider from "contexts/SettingsContext";
+import { restoreSettings } from "utils/settings";
+import { Auth0Provider } from "@auth0/auth0-react";
+import history from "utils/history";
 
 // import { Auth0Provider } from './components/Auth/Auth';
 
@@ -40,7 +40,7 @@ ReactDOM.render(
       <App />
     </SettingsContextProvider>
   </Auth0Provider>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

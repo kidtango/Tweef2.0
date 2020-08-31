@@ -10,7 +10,7 @@ interface Props {
 const Index: React.FC<Props> = ({ status }) => {
   const classes = useStyle();
   return (
-    <div className={clsx(classes.root, classes["sold"])}>
+    <div className={clsx(classes.root, classes[status])}>
       <small>
         <Typography variant="caption">{status}</Typography>
       </small>
@@ -39,7 +39,7 @@ const useStyle = makeStyles((theme) => ({
       fontWeight: "bold",
       fontSize: "14",
       transform: "rotate(45deg)",
-      boxShadow: theme.shadows[1],
+      boxShadow: theme.shadows[2],
       top: 16,
       left: 27
     }

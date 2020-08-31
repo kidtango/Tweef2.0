@@ -1,5 +1,6 @@
-import { useInfiniteQuery, QueryOptions } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { client } from "graphqlClient/publicGQLClient";
+import { gql } from "graphql-request";
 
 interface Variables {
   cursor?: string;
@@ -9,9 +10,21 @@ interface Variables {
 }
 
 export const getLiveStockQuery = () => {
-  const query = `
-    query LivestockWithFilter( $cursor: timestamptz, $SPS: String!, $LPS: String!, $soft_coral: String!) {
-      livestock(limit: 6, order_by: {createdAt: desc}, where: { createdAt: {_lt: $cursor }, coral_type: {_in: [$SPS, $LPS, $soft_coral]}}) {
+  const query = gql`
+    query LivestockWithFilter(
+      $cursor: timestamptz
+      $SPS: String!
+      $LPS: String!
+      $soft_coral: String!
+    ) {
+      livestock(
+        limit: 6
+        order_by: { created_at: desc }
+        where: {
+          created_at: { _lt: $cursor }
+          coral_type: { _in: [$SPS, $LPS, $soft_coral] }
+        }
+      ) {
         id
         likes {
           id
@@ -19,19 +32,18 @@ export const getLiveStockQuery = () => {
             auth0_id
           }
         }
-        location
+        zipcode
         price
-        createdAt
-        updatedAt
+        created_at
+        updated_at
         description
         user {
           auth0_id
           nick_name
           picture
           rating
-          }
+        }
         name
-        water
         class
         coral_type
         images

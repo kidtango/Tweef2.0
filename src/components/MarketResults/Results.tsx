@@ -17,6 +17,7 @@ import useLivestockInfiniteQuery from "operations/queries/livestock/useLivestock
 import useIntersectionObserver from "hooks/useIntersectionObserver";
 import LivestockCard from "components/LivestockCard";
 import { calculateItemNum } from "./calculateItemNum";
+import Loader from "components/loader";
 
 interface ResultsProps {
   filterObj: any;
@@ -67,7 +68,11 @@ const Results: React.FC<ResultsProps> = ({ filterObj, ...rest }) => {
   };
 
   if (status === "loading") {
-    return <Box mt={6}>Loading...</Box>;
+    return (
+      <Box>
+        <Loader size={30} />
+      </Box>
+    );
   }
 
   if (error) {
@@ -110,23 +115,24 @@ const Results: React.FC<ResultsProps> = ({ filterObj, ...rest }) => {
       </Box>
       {/* Livestock cards */}
       <Grid container spacing={3} className={classes.livestockCards}>
-        {data.map((group) => (
-          <>
-            {group.livestock.map((item: any) => (
-              <>
-                <Grid
-                  item
-                  key={item.id}
-                  md={mode === "grid" ? 4 : 12}
-                  sm={mode === "grid" ? 6 : 12}
-                  xs={12}
-                >
-                  <LivestockCard livestock={item} />
-                </Grid>
-              </>
-            ))}
-          </>
-        ))}
+        {data &&
+          data.map((group) => (
+            <>
+              {group.livestock.map((item: any) => (
+                <>
+                  <Grid
+                    item
+                    key={item.id}
+                    md={mode === "grid" ? 4 : 12}
+                    sm={mode === "grid" ? 6 : 12}
+                    xs={12}
+                  >
+                    <LivestockCard livestock={item} />
+                  </Grid>
+                </>
+              ))}
+            </>
+          ))}
       </Grid>
 
       <Menu
@@ -147,10 +153,10 @@ const Results: React.FC<ResultsProps> = ({ filterObj, ...rest }) => {
         <Button
           ref={loadMoreButtonRef}
           onClick={handleFetchMore}
-          disabled={!canFetchMore || isFetchingMore}
+          // disabled={!canFetchMore || isFetchingMore}
           variant="text"
         >
-          {isFetchingMore && "loading..."}
+          {isFetchingMore && <Loader size={30} />}
         </Button>
       </Box>
     </div>

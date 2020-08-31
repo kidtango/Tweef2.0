@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   Chip,
   List,
@@ -10,69 +10,70 @@ import {
   Divider,
   ListSubheader,
   Drawer
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   PieChart as PieChartIcon,
   ShoppingCart as ShoppingCartIcon,
   Share2 as ShareIcon,
   Mail as MailIcon
-} from 'react-feather';
-import { useLocation, Link as RouterLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/styles';
+} from "react-feather";
+import { useLocation, Link as RouterLink } from "react-router-dom";
+import { makeStyles } from "@material-ui/styles";
 
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import RenderNavItems from './components/RenderNavItems';
-import Logo from 'assets/icons/Logo';
+import PerfectScrollbar from "react-perfect-scrollbar";
+import RenderNavItems from "./components/RenderNavItems";
+// import Logo from "assets/icons/Logo";
+import MonkFish from "assets/icons/MonkFish";
 
 const navConfig = [
   {
-    subheader: 'My Aquariums',
+    subheader: "My Aquariums",
     items: [
       {
-        title: 'Dashboard',
+        title: "Dashboard",
         icon: PieChartIcon,
-        href: '/app/myaquarium/dashboard'
+        href: "/app/myaquarium/dashboard"
       }
     ]
   },
   {
-    subheader: 'Applications',
+    subheader: "Applications",
     items: [
       {
-        title: 'Market',
-        href: '/app/market',
+        title: "Market",
+        href: "/app/market",
         icon: ShoppingCartIcon,
         items: [
           {
-            title: 'Browse Market',
-            href: '/app/market'
+            title: "Browse Market",
+            href: "/app/market"
           },
           {
-            title: 'List Item On Market',
-            href: '/app/market/ListItem'
+            title: "List Item On Market",
+            href: "/app/market/ListItem"
           },
           {
-            title: 'My Listings',
-            href: '/app/market/MyListings'
+            title: "My Listings",
+            href: "/app/market/MyListings"
           }
         ]
       },
       {
-        title: 'Social Platform',
-        href: '/app/social',
+        title: "Social Platform",
+        href: "/app/social",
         icon: ShareIcon,
         items: [
-          { title: 'Profile', href: '/app/social/profile' },
+          { title: "Profile", href: "/app/social/profile" },
           {
-            title: 'Salty',
-            href: '/app/social/feed/salty'
+            title: "Salty",
+            href: "/app/social/feed/salty"
           },
-          { title: 'Fresh', href: '/app/social/feed/fresh' }
+          { title: "Fresh", href: "/app/social/feed/fresh" }
         ]
       },
       {
-        title: 'Mail',
-        href: '/app/mail',
+        title: "Mail",
+        href: "/app/mail",
         icon: MailIcon,
         info: () => <Chip color="secondary" size="small" label="Updated" />
       }
@@ -82,11 +83,11 @@ const navConfig = [
 
 // mock data
 const user = {
-  firstName: 'Scott',
-  lastName: 'Tang',
-  bio: 'Software Engineer',
+  firstName: "Scott",
+  lastName: "Tang",
+  bio: "Software Engineer",
   avatar:
-    'https://insidethemagic-119e2.kxcdn.com/wp-content/uploads/2017/11/4Avatar-2-5.jpg'
+    "https://insidethemagic-119e2.kxcdn.com/wp-content/uploads/2017/11/4Avatar-2-5.jpg"
 };
 
 interface NavBarProps {
@@ -111,7 +112,7 @@ const NavBar: React.FC<NavBarProps> = ({ openMobile, onMobileClose }) => {
         <Hidden lgUp>
           <Box p={2} display="flex" justifyContent="center">
             <RouterLink to="/">
-              <Logo fontSize="large" />
+              <MonkFish fontSize="large" />
             </RouterLink>
           </Box>
         </Hidden>
@@ -192,10 +193,10 @@ const useStyles = makeStyles(() => ({
   desktopDrawer: {
     width: 256,
     top: 64,
-    height: 'calc(100% - 64px)'
+    height: "calc(100% - 64px)"
   },
   avatar: {
-    cursor: 'pointer',
+    cursor: "pointer",
     width: 64,
     height: 64
   }
