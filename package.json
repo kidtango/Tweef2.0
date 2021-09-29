@@ -32,7 +32,7 @@
     "graphql-request": "^3.0.0",
     "history": "^4.10.1",
     "html-react-parser": "^0.13.0",
-    "i": "^0.3.6",
+    "i": "^0.3.7",
     "immer": "^6.0.9",
     "jss-rtl": "^0.3.0",
     "lodash": "^4.17.20",
